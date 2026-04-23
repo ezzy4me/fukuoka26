@@ -1,0 +1,24 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - echo "Static site deployment - no build required"
+        - echo "Checking public/ directory contents..."
+    build:
+      commands:
+        - echo "Preparing static files for deployment"
+        - |
+          if [ ! -d "public" ] || [ -z "$(ls -A public 2>/dev/null)" ]; then
+            echo "Error: public/ directory is empty or missing"
+            echo "Run ./scripts/sync-from-frontagent.sh before pushing to GitHub"
+            exit 1
+          fi
+        - ls -la public/
+        - echo "Deployment ready"
+  artifacts:
+    baseDirectory: /public
+    files:
+      - '**/*'
+  cache:
+    paths: []

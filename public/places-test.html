@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Places Search Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        input { padding: 10px; width: 300px; font-size: 16px; }
+        button { padding: 10px 20px; font-size: 16px; margin-left: 10px; }
+        .result { border: 2px solid #2e4a62; padding: 15px; margin: 10px 0; }
+        .result h3 { color: #2e4a62; margin-bottom: 5px; }
+        .category { background: #e8a5a0; color: white; padding: 3px 10px; font-size: 12px; display: inline-block; }
+        a { display: inline-block; margin-top: 10px; padding: 8px 15px; background: #4a7c9e; color: white; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>Fukuoka Places Search (Test)</h1>
+    <p>총 <strong id="total">0</strong>개 장소 검색 가능</p>
+    <input type="text" id="search" placeholder="라멘, 카페, 스시..." onkeypress="if(event.key==='Enter') searchPlaces()">
+    <button onclick="searchPlaces()">검색</button>
+    <div id="results"></div>
+
+    <script>
+// Auto-generated from KML - DO NOT EDIT MANUALLY
+// Generated: 2026-04-21T02:35:05.571946
+// Total places: 57
+
+const FUKUOKA_PLACES_DATA = {
+  "places": [
+    {
+      "name": "타카미 스시",
+      "lat": 33.5846346,
+      "lng": 130.3951329,
+      "category": "Sushi & Meal",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%83%80%EC%B9%B4%EB%AF%B8%20%EC%8A%A4%EC%8B%9C"
+    },
+    {
+      "name": "스시사카바 사시스 하카타마잉구점",
+      "lat": 33.5906798,
+      "lng": 130.4206962,
+      "category": "Sushi & Meal",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%8B%9C%EC%82%AC%EC%B9%B4%EB%B0%94%20%EC%82%AC%EC%8B%9C%EC%8A%A4%20%ED%95%98%EC%B9%B4%ED%83%80%EB%A7%88%EC%9E%89%EA%B5%AC%EC%A0%90"
+    },
+    {
+      "name": "旨鮨stand O",
+      "lat": 33.5913748,
+      "lng": 130.3928677,
+      "category": "Sushi & Meal",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%97%A8%E9%AE%A8stand%20O"
+    },
+    {
+      "name": "우오츄",
+      "lat": 33.5854051,
+      "lng": 130.3977491,
+      "category": "Sushi & Meal",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EC%98%A4%EC%B8%84"
+    },
+    {
+      "name": "쇼쿠도 미츠",
+      "lat": 33.5830234,
+      "lng": 130.4083219,
+      "category": "Sushi & Meal",
+      "description": "굉장히 가고 싶음",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%87%BC%EC%BF%A0%EB%8F%84%20%EB%AF%B8%EC%B8%A0"
+    },
+    {
+      "name": "殊代 cotoshiro（ことしろ）",
+      "lat": 33.5880955,
+      "lng": 130.3923513,
+      "category": "Sushi & Meal",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%AE%8A%E4%BB%A3%20cotoshiro%EF%BC%88%E3%81%93%E3%81%A8%E3%81%97%E3%82%8D%EF%BC%89"
+    },
+    {
+      "name": "텐텐테이",
+      "lat": 33.594518,
+      "lng": 130.400779,
+      "category": "Sushi & Meal",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4"
+    },
+    {
+      "name": "부타 매니아동 이나다야 선",
+      "lat": 33.5829599,
+      "lng": 130.407105,
+      "category": "Sushi & Meal",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B6%80%ED%83%80%20%EB%A7%A4%EB%8B%88%EC%95%84%EB%8F%99%20%EC%9D%B4%EB%82%98%EB%8B%A4%EC%95%BC%20%EC%84%A0"
+    },
+    {
+      "name": "시즈솜 카페",
+      "lat": 33.5727588,
+      "lng": 130.4162288,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EC%A6%88%EC%86%9C%20%EC%B9%B4%ED%8E%98"
+    },
+    {
+      "name": "OYATUYA.Uの喫茶",
+      "lat": 33.581072,
+      "lng": 130.4036796,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=OYATUYA.U%E3%81%AE%E5%96%AB%E8%8C%B6"
+    },
+    {
+      "name": "굿 업 커피",
+      "lat": 33.5774746,
+      "lng": 130.4065069,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EA%B5%BF%20%EC%97%85%20%EC%BB%A4%ED%94%BC"
+    },
+    {
+      "name": "시로가네사보",
+      "lat": 33.5783366,
+      "lng": 130.4053765,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EB%A1%9C%EA%B0%80%EB%84%A4%EC%82%AC%EB%B3%B4"
+    },
+    {
+      "name": "APOC COFFEE",
+      "lat": 33.5885316,
+      "lng": 130.4166046,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=APOC%20COFFEE"
+    },
+    {
+      "name": "이시무라 만세이도 본점",
+      "lat": 33.595926,
+      "lng": 130.404348,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9D%B4%EC%8B%9C%EB%AC%B4%EB%9D%BC%20%EB%A7%8C%EC%84%B8%EC%9D%B4%EB%8F%84%20%EB%B3%B8%EC%A0%90"
+    },
+    {
+      "name": "TOFFEE park",
+      "lat": 33.592068,
+      "lng": 130.4043927,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=TOFFEE%20park"
+    },
+    {
+      "name": "칸미도코로 타키무라",
+      "lat": 33.5952019,
+      "lng": 130.4057173,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%B9%B8%EB%AF%B8%EB%8F%84%EC%BD%94%EB%A1%9C%20%ED%83%80%ED%82%A4%EB%AC%B4%EB%9D%BC"
+    },
+    {
+      "name": "파크 사우스 샌드위치 후쿠오카",
+      "lat": 33.58961,
+      "lng": 130.3947959,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%8C%8C%ED%81%AC%20%EC%82%AC%EC%9A%B0%EC%8A%A4%20%EC%83%8C%EB%93%9C%EC%9C%84%EC%B9%98%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4"
+    },
+    {
+      "name": "Henri Charpentier",
+      "lat": 33.5896847,
+      "lng": 130.4200838,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Henri%20Charpentier"
+    },
+    {
+      "name": "다코멧카",
+      "lat": 33.5874397,
+      "lng": 130.4193439,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8B%A4%EC%BD%94%EB%A9%A7%EC%B9%B4"
+    },
+    {
+      "name": "빵 스톡 텐진점",
+      "lat": 33.5916517,
+      "lng": 130.4040419,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B9%B5%20%EC%8A%A4%ED%86%A1%20%ED%85%90%EC%A7%84%EC%A0%90"
+    },
+    {
+      "name": "The CRAFT Bar and Grill",
+      "lat": 33.5894461,
+      "lng": 130.3949854,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20CRAFT%20Bar%20and%20Grill"
+    },
+    {
+      "name": "375 cafe & bar",
+      "lat": 33.5766502,
+      "lng": 130.4040751,
+      "category": "Cafe & Bakery",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=375%20cafe%20%26%20bar"
+    },
+    {
+      "name": "리치몬드 호텔 텐진 니시도리",
+      "lat": 33.5893232,
+      "lng": 130.3965747,
+      "category": "Base",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A6%AC%EC%B9%98%EB%AA%AC%EB%93%9C%20%ED%98%B8%ED%85%94%20%ED%85%90%EC%A7%84%20%EB%8B%88%EC%8B%9C%EB%8F%84%EB%A6%AC"
+    },
+    {
+      "name": "히키니쿠토코메 이마이즈미",
+      "lat": 33.5836059,
+      "lng": 130.3991432,
+      "category": "Hamburg",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%9E%88%ED%82%A4%EB%8B%88%EC%BF%A0%ED%86%A0%EC%BD%94%EB%A9%94%20%EC%9D%B4%EB%A7%88%EC%9D%B4%EC%A6%88%EB%AF%B8"
+    },
+    {
+      "name": "Messi",
+      "lat": 33.654869,
+      "lng": 130.4459639,
+      "category": "Hamburg",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Messi"
+    },
+    {
+      "name": "Tomatobatake",
+      "lat": 33.594681,
+      "lng": 130.399314,
+      "category": "Hamburg",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Tomatobatake"
+    },
+    {
+      "name": "쟈포네",
+      "lat": 33.5978899,
+      "lng": 130.4028281,
+      "category": "Hamburg",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9F%88%ED%8F%AC%EB%84%A4"
+    },
+    {
+      "name": "비스트로 오",
+      "lat": 33.5918312,
+      "lng": 130.3939625,
+      "category": "Hamburg",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B9%84%EC%8A%A4%ED%8A%B8%EB%A1%9C%20%EC%98%A4"
+    },
+    {
+      "name": "키와미야 하카타역 지하가점",
+      "lat": 33.5909166,
+      "lng": 130.4193234,
+      "category": "Hamburg",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%AD%20%EC%A7%80%ED%95%98%EA%B0%80%EC%A0%90"
+    },
+    {
+      "name": "시치린 야키니쿠 유키",
+      "lat": 33.5933937,
+      "lng": 130.4046507,
+      "category": "Yakiniku",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EC%B9%98%EB%A6%B0%20%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%EC%9C%A0%ED%82%A4"
+    },
+    {
+      "name": "焼肉 溜 Tamari",
+      "lat": 33.587413,
+      "lng": 130.394047,
+      "category": "Yakiniku",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%20%E6%BA%9C%20Tamari"
+    },
+    {
+      "name": "야키니쿠 하나비 2호점",
+      "lat": 33.5892691,
+      "lng": 130.4044363,
+      "category": "Yakiniku",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%95%98%EB%82%98%EB%B9%84%202%ED%98%B8%EC%A0%90"
+    },
+    {
+      "name": "야키니쿠 키와미야 다이묘점",
+      "lat": 33.5869122,
+      "lng": 130.3949032,
+      "category": "Yakiniku",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%EB%8B%A4%EC%9D%B4%EB%AC%98%EC%A0%90"
+    },
+    {
+      "name": "야키니쿠 타규 하카타에키미나미점",
+      "lat": 33.5856452,
+      "lng": 130.4237455,
+      "category": "Yakiniku",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%83%80%EA%B7%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%90%ED%82%A4%EB%AF%B8%EB%82%98%EB%AF%B8%EC%A0%90"
+    },
+    {
+      "name": "焼肉ホルモン人生 大ちゃん",
+      "lat": 33.6107258,
+      "lng": 130.4195169,
+      "category": "Yakiniku",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%E3%83%9B%E3%83%AB%E3%83%A2%E3%83%B3%E4%BA%BA%E7%94%9F%20%E5%A4%A7%E3%81%A1%E3%82%83%E3%82%93"
+    },
+    {
+      "name": "긴노이타",
+      "lat": 33.5854046,
+      "lng": 130.3957153,
+      "category": "Okonomiyaki",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EA%B8%B4%EB%85%B8%EC%9D%B4%ED%83%80"
+    },
+    {
+      "name": "Denkosekka",
+      "lat": 33.5907775,
+      "lng": 130.4106108,
+      "category": "Okonomiyaki",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Denkosekka"
+    },
+    {
+      "name": "텐텐테이",
+      "lat": 33.594518,
+      "lng": 130.400779,
+      "category": "Izakaya",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4"
+    },
+    {
+      "name": "브라우니",
+      "lat": 33.5929559,
+      "lng": 130.3968802,
+      "category": "Izakaya",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B8%8C%EB%9D%BC%EC%9A%B0%EB%8B%88"
+    },
+    {
+      "name": "돈토코이",
+      "lat": 33.5759358,
+      "lng": 130.3719374,
+      "category": "Izakaya",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8F%88%ED%86%A0%EC%BD%94%EC%9D%B4"
+    },
+    {
+      "name": "메종멘타이",
+      "lat": 33.5871908,
+      "lng": 130.4040406,
+      "category": "Izakaya",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%94%EC%A2%85%EB%A9%98%ED%83%80%EC%9D%B4"
+    },
+    {
+      "name": "焼き鳥うたう",
+      "lat": 33.5819531,
+      "lng": 130.3973282,
+      "category": "Izakaya",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E3%81%8D%E9%B3%A5%E3%81%86%E3%81%9F%E3%81%86"
+    },
+    {
+      "name": "GOOD MARKET KYUSHU",
+      "lat": 33.5897927,
+      "lng": 130.4112169,
+      "category": "Store",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GOOD%20MARKET%20KYUSHU"
+    },
+    {
+      "name": "한큐 하카타",
+      "lat": 33.589364,
+      "lng": 130.4198378,
+      "category": "Store",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%95%9C%ED%81%90%20%ED%95%98%EC%B9%B4%ED%83%80"
+    },
+    {
+      "name": "캐널시티 하카타",
+      "lat": 33.5896305,
+      "lng": 130.4109478,
+      "category": "Store",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%BA%90%EB%84%90%EC%8B%9C%ED%8B%B0%20%ED%95%98%EC%B9%B4%ED%83%80"
+    },
+    {
+      "name": "스미요시 슈한 (사케판매점)",
+      "lat": 33.5852847,
+      "lng": 130.4117245,
+      "category": "Store",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EB%AF%B8%EC%9A%94%EC%8B%9C%20%EC%8A%88%ED%95%9C%20%28%EC%82%AC%EC%BC%80%ED%8C%90%EB%A7%A4%EC%A0%90%29"
+    },
+    {
+      "name": "GU 요도바시 하카타",
+      "lat": 33.5885318,
+      "lng": 130.421391,
+      "category": "Store",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GU%20%EC%9A%94%EB%8F%84%EB%B0%94%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80"
+    },
+    {
+      "name": "GU Mina Tenjin",
+      "lat": 33.5929742,
+      "lng": 130.3983736,
+      "category": "Store",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GU%20Mina%20Tenjin"
+    },
+    {
+      "name": "몽벨",
+      "lat": 33.5878551,
+      "lng": 130.398327,
+      "category": "Store",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%AA%BD%EB%B2%A8"
+    },
+    {
+      "name": "Ishii Sports Yodobashi Hakata store",
+      "lat": 33.5882884,
+      "lng": 130.4215225,
+      "category": "Store",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ishii%20Sports%20Yodobashi%20Hakata%20store"
+    },
+    {
+      "name": "오오시게 쇼쿠도 이마이즈미점",
+      "lat": 33.5869882,
+      "lng": 130.4007159,
+      "category": "Ramen",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%98%A4%EC%98%A4%EC%8B%9C%EA%B2%8C%20%EC%87%BC%EC%BF%A0%EB%8F%84%20%EC%9D%B4%EB%A7%88%EC%9D%B4%EC%A6%88%EB%AF%B8%EC%A0%90"
+    },
+    {
+      "name": "라멘 신타로",
+      "lat": 33.5807612,
+      "lng": 130.409304,
+      "category": "Ramen",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%9D%BC%EB%A9%98%20%EC%8B%A0%ED%83%80%EB%A1%9C"
+    },
+    {
+      "name": "멘도하나모코시",
+      "lat": 33.5809807,
+      "lng": 130.3953376,
+      "category": "Ramen",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%98%EB%8F%84%ED%95%98%EB%82%98%EB%AA%A8%EC%BD%94%EC%8B%9C"
+    },
+    {
+      "name": "멘야잇시 라멘",
+      "lat": 33.5923001,
+      "lng": 130.4079304,
+      "category": "Ramen",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%98%EC%95%BC%EC%9E%87%EC%8B%9C%20%EB%9D%BC%EB%A9%98"
+    },
+    {
+      "name": "오호리 공원",
+      "lat": 33.5862065,
+      "lng": 130.3764646,
+      "category": "Attraction",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%98%A4%ED%98%B8%EB%A6%AC%20%EA%B3%B5%EC%9B%90"
+    },
+    {
+      "name": "스이쿄텐만구",
+      "lat": 33.5926509,
+      "lng": 130.4018375,
+      "category": "Attraction",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%9D%B4%EC%BF%84%ED%85%90%EB%A7%8C%EA%B5%AC"
+    },
+    {
+      "name": "우미노나카미치 해변공원",
+      "lat": 33.6642785,
+      "lng": 130.3616,
+      "category": "Attraction",
+      "description": "",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EB%AF%B8%EB%85%B8%EB%82%98%EC%B9%B4%EB%AF%B8%EC%B9%98%20%ED%95%B4%EB%B3%80%EA%B3%B5%EC%9B%90"
+    }
+  ],
+  "categories": {
+    "Sushi & Meal": [
+      {
+        "name": "타카미 스시",
+        "lat": 33.5846346,
+        "lng": 130.3951329,
+        "category": "Sushi & Meal",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%83%80%EC%B9%B4%EB%AF%B8%20%EC%8A%A4%EC%8B%9C"
+      },
+      {
+        "name": "스시사카바 사시스 하카타마잉구점",
+        "lat": 33.5906798,
+        "lng": 130.4206962,
+        "category": "Sushi & Meal",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%8B%9C%EC%82%AC%EC%B9%B4%EB%B0%94%20%EC%82%AC%EC%8B%9C%EC%8A%A4%20%ED%95%98%EC%B9%B4%ED%83%80%EB%A7%88%EC%9E%89%EA%B5%AC%EC%A0%90"
+      },
+      {
+        "name": "旨鮨stand O",
+        "lat": 33.5913748,
+        "lng": 130.3928677,
+        "category": "Sushi & Meal",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%97%A8%E9%AE%A8stand%20O"
+      },
+      {
+        "name": "우오츄",
+        "lat": 33.5854051,
+        "lng": 130.3977491,
+        "category": "Sushi & Meal",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EC%98%A4%EC%B8%84"
+      },
+      {
+        "name": "쇼쿠도 미츠",
+        "lat": 33.5830234,
+        "lng": 130.4083219,
+        "category": "Sushi & Meal",
+        "description": "굉장히 가고 싶음",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%87%BC%EC%BF%A0%EB%8F%84%20%EB%AF%B8%EC%B8%A0"
+      },
+      {
+        "name": "殊代 cotoshiro（ことしろ）",
+        "lat": 33.5880955,
+        "lng": 130.3923513,
+        "category": "Sushi & Meal",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%AE%8A%E4%BB%A3%20cotoshiro%EF%BC%88%E3%81%93%E3%81%A8%E3%81%97%E3%82%8D%EF%BC%89"
+      },
+      {
+        "name": "텐텐테이",
+        "lat": 33.594518,
+        "lng": 130.400779,
+        "category": "Sushi & Meal",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4"
+      },
+      {
+        "name": "부타 매니아동 이나다야 선",
+        "lat": 33.5829599,
+        "lng": 130.407105,
+        "category": "Sushi & Meal",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B6%80%ED%83%80%20%EB%A7%A4%EB%8B%88%EC%95%84%EB%8F%99%20%EC%9D%B4%EB%82%98%EB%8B%A4%EC%95%BC%20%EC%84%A0"
+      }
+    ],
+    "Cafe & Bakery": [
+      {
+        "name": "시즈솜 카페",
+        "lat": 33.5727588,
+        "lng": 130.4162288,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EC%A6%88%EC%86%9C%20%EC%B9%B4%ED%8E%98"
+      },
+      {
+        "name": "OYATUYA.Uの喫茶",
+        "lat": 33.581072,
+        "lng": 130.4036796,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=OYATUYA.U%E3%81%AE%E5%96%AB%E8%8C%B6"
+      },
+      {
+        "name": "굿 업 커피",
+        "lat": 33.5774746,
+        "lng": 130.4065069,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EA%B5%BF%20%EC%97%85%20%EC%BB%A4%ED%94%BC"
+      },
+      {
+        "name": "시로가네사보",
+        "lat": 33.5783366,
+        "lng": 130.4053765,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EB%A1%9C%EA%B0%80%EB%84%A4%EC%82%AC%EB%B3%B4"
+      },
+      {
+        "name": "APOC COFFEE",
+        "lat": 33.5885316,
+        "lng": 130.4166046,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=APOC%20COFFEE"
+      },
+      {
+        "name": "이시무라 만세이도 본점",
+        "lat": 33.595926,
+        "lng": 130.404348,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9D%B4%EC%8B%9C%EB%AC%B4%EB%9D%BC%20%EB%A7%8C%EC%84%B8%EC%9D%B4%EB%8F%84%20%EB%B3%B8%EC%A0%90"
+      },
+      {
+        "name": "TOFFEE park",
+        "lat": 33.592068,
+        "lng": 130.4043927,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=TOFFEE%20park"
+      },
+      {
+        "name": "칸미도코로 타키무라",
+        "lat": 33.5952019,
+        "lng": 130.4057173,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%B9%B8%EB%AF%B8%EB%8F%84%EC%BD%94%EB%A1%9C%20%ED%83%80%ED%82%A4%EB%AC%B4%EB%9D%BC"
+      },
+      {
+        "name": "파크 사우스 샌드위치 후쿠오카",
+        "lat": 33.58961,
+        "lng": 130.3947959,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%8C%8C%ED%81%AC%20%EC%82%AC%EC%9A%B0%EC%8A%A4%20%EC%83%8C%EB%93%9C%EC%9C%84%EC%B9%98%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4"
+      },
+      {
+        "name": "Henri Charpentier",
+        "lat": 33.5896847,
+        "lng": 130.4200838,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Henri%20Charpentier"
+      },
+      {
+        "name": "다코멧카",
+        "lat": 33.5874397,
+        "lng": 130.4193439,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8B%A4%EC%BD%94%EB%A9%A7%EC%B9%B4"
+      },
+      {
+        "name": "빵 스톡 텐진점",
+        "lat": 33.5916517,
+        "lng": 130.4040419,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B9%B5%20%EC%8A%A4%ED%86%A1%20%ED%85%90%EC%A7%84%EC%A0%90"
+      },
+      {
+        "name": "The CRAFT Bar and Grill",
+        "lat": 33.5894461,
+        "lng": 130.3949854,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20CRAFT%20Bar%20and%20Grill"
+      },
+      {
+        "name": "375 cafe & bar",
+        "lat": 33.5766502,
+        "lng": 130.4040751,
+        "category": "Cafe & Bakery",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=375%20cafe%20%26%20bar"
+      }
+    ],
+    "Base": [
+      {
+        "name": "리치몬드 호텔 텐진 니시도리",
+        "lat": 33.5893232,
+        "lng": 130.3965747,
+        "category": "Base",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A6%AC%EC%B9%98%EB%AA%AC%EB%93%9C%20%ED%98%B8%ED%85%94%20%ED%85%90%EC%A7%84%20%EB%8B%88%EC%8B%9C%EB%8F%84%EB%A6%AC"
+      }
+    ],
+    "Hamburg": [
+      {
+        "name": "히키니쿠토코메 이마이즈미",
+        "lat": 33.5836059,
+        "lng": 130.3991432,
+        "category": "Hamburg",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%9E%88%ED%82%A4%EB%8B%88%EC%BF%A0%ED%86%A0%EC%BD%94%EB%A9%94%20%EC%9D%B4%EB%A7%88%EC%9D%B4%EC%A6%88%EB%AF%B8"
+      },
+      {
+        "name": "Messi",
+        "lat": 33.654869,
+        "lng": 130.4459639,
+        "category": "Hamburg",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Messi"
+      },
+      {
+        "name": "Tomatobatake",
+        "lat": 33.594681,
+        "lng": 130.399314,
+        "category": "Hamburg",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Tomatobatake"
+      },
+      {
+        "name": "쟈포네",
+        "lat": 33.5978899,
+        "lng": 130.4028281,
+        "category": "Hamburg",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9F%88%ED%8F%AC%EB%84%A4"
+      },
+      {
+        "name": "비스트로 오",
+        "lat": 33.5918312,
+        "lng": 130.3939625,
+        "category": "Hamburg",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B9%84%EC%8A%A4%ED%8A%B8%EB%A1%9C%20%EC%98%A4"
+      },
+      {
+        "name": "키와미야 하카타역 지하가점",
+        "lat": 33.5909166,
+        "lng": 130.4193234,
+        "category": "Hamburg",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%AD%20%EC%A7%80%ED%95%98%EA%B0%80%EC%A0%90"
+      }
+    ],
+    "Yakiniku": [
+      {
+        "name": "시치린 야키니쿠 유키",
+        "lat": 33.5933937,
+        "lng": 130.4046507,
+        "category": "Yakiniku",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EC%B9%98%EB%A6%B0%20%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%EC%9C%A0%ED%82%A4"
+      },
+      {
+        "name": "焼肉 溜 Tamari",
+        "lat": 33.587413,
+        "lng": 130.394047,
+        "category": "Yakiniku",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%20%E6%BA%9C%20Tamari"
+      },
+      {
+        "name": "야키니쿠 하나비 2호점",
+        "lat": 33.5892691,
+        "lng": 130.4044363,
+        "category": "Yakiniku",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%95%98%EB%82%98%EB%B9%84%202%ED%98%B8%EC%A0%90"
+      },
+      {
+        "name": "야키니쿠 키와미야 다이묘점",
+        "lat": 33.5869122,
+        "lng": 130.3949032,
+        "category": "Yakiniku",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%EB%8B%A4%EC%9D%B4%EB%AC%98%EC%A0%90"
+      },
+      {
+        "name": "야키니쿠 타규 하카타에키미나미점",
+        "lat": 33.5856452,
+        "lng": 130.4237455,
+        "category": "Yakiniku",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%83%80%EA%B7%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%90%ED%82%A4%EB%AF%B8%EB%82%98%EB%AF%B8%EC%A0%90"
+      },
+      {
+        "name": "焼肉ホルモン人生 大ちゃん",
+        "lat": 33.6107258,
+        "lng": 130.4195169,
+        "category": "Yakiniku",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%E3%83%9B%E3%83%AB%E3%83%A2%E3%83%B3%E4%BA%BA%E7%94%9F%20%E5%A4%A7%E3%81%A1%E3%82%83%E3%82%93"
+      }
+    ],
+    "Okonomiyaki": [
+      {
+        "name": "긴노이타",
+        "lat": 33.5854046,
+        "lng": 130.3957153,
+        "category": "Okonomiyaki",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EA%B8%B4%EB%85%B8%EC%9D%B4%ED%83%80"
+      },
+      {
+        "name": "Denkosekka",
+        "lat": 33.5907775,
+        "lng": 130.4106108,
+        "category": "Okonomiyaki",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Denkosekka"
+      }
+    ],
+    "Izakaya": [
+      {
+        "name": "텐텐테이",
+        "lat": 33.594518,
+        "lng": 130.400779,
+        "category": "Izakaya",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4"
+      },
+      {
+        "name": "브라우니",
+        "lat": 33.5929559,
+        "lng": 130.3968802,
+        "category": "Izakaya",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B8%8C%EB%9D%BC%EC%9A%B0%EB%8B%88"
+      },
+      {
+        "name": "돈토코이",
+        "lat": 33.5759358,
+        "lng": 130.3719374,
+        "category": "Izakaya",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8F%88%ED%86%A0%EC%BD%94%EC%9D%B4"
+      },
+      {
+        "name": "메종멘타이",
+        "lat": 33.5871908,
+        "lng": 130.4040406,
+        "category": "Izakaya",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%94%EC%A2%85%EB%A9%98%ED%83%80%EC%9D%B4"
+      },
+      {
+        "name": "焼き鳥うたう",
+        "lat": 33.5819531,
+        "lng": 130.3973282,
+        "category": "Izakaya",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E3%81%8D%E9%B3%A5%E3%81%86%E3%81%9F%E3%81%86"
+      }
+    ],
+    "Store": [
+      {
+        "name": "GOOD MARKET KYUSHU",
+        "lat": 33.5897927,
+        "lng": 130.4112169,
+        "category": "Store",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GOOD%20MARKET%20KYUSHU"
+      },
+      {
+        "name": "한큐 하카타",
+        "lat": 33.589364,
+        "lng": 130.4198378,
+        "category": "Store",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%95%9C%ED%81%90%20%ED%95%98%EC%B9%B4%ED%83%80"
+      },
+      {
+        "name": "캐널시티 하카타",
+        "lat": 33.5896305,
+        "lng": 130.4109478,
+        "category": "Store",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%BA%90%EB%84%90%EC%8B%9C%ED%8B%B0%20%ED%95%98%EC%B9%B4%ED%83%80"
+      },
+      {
+        "name": "스미요시 슈한 (사케판매점)",
+        "lat": 33.5852847,
+        "lng": 130.4117245,
+        "category": "Store",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EB%AF%B8%EC%9A%94%EC%8B%9C%20%EC%8A%88%ED%95%9C%20%28%EC%82%AC%EC%BC%80%ED%8C%90%EB%A7%A4%EC%A0%90%29"
+      },
+      {
+        "name": "GU 요도바시 하카타",
+        "lat": 33.5885318,
+        "lng": 130.421391,
+        "category": "Store",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GU%20%EC%9A%94%EB%8F%84%EB%B0%94%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80"
+      },
+      {
+        "name": "GU Mina Tenjin",
+        "lat": 33.5929742,
+        "lng": 130.3983736,
+        "category": "Store",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GU%20Mina%20Tenjin"
+      },
+      {
+        "name": "몽벨",
+        "lat": 33.5878551,
+        "lng": 130.398327,
+        "category": "Store",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%AA%BD%EB%B2%A8"
+      },
+      {
+        "name": "Ishii Sports Yodobashi Hakata store",
+        "lat": 33.5882884,
+        "lng": 130.4215225,
+        "category": "Store",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ishii%20Sports%20Yodobashi%20Hakata%20store"
+      }
+    ],
+    "Ramen": [
+      {
+        "name": "오오시게 쇼쿠도 이마이즈미점",
+        "lat": 33.5869882,
+        "lng": 130.4007159,
+        "category": "Ramen",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%98%A4%EC%98%A4%EC%8B%9C%EA%B2%8C%20%EC%87%BC%EC%BF%A0%EB%8F%84%20%EC%9D%B4%EB%A7%88%EC%9D%B4%EC%A6%88%EB%AF%B8%EC%A0%90"
+      },
+      {
+        "name": "라멘 신타로",
+        "lat": 33.5807612,
+        "lng": 130.409304,
+        "category": "Ramen",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%9D%BC%EB%A9%98%20%EC%8B%A0%ED%83%80%EB%A1%9C"
+      },
+      {
+        "name": "멘도하나모코시",
+        "lat": 33.5809807,
+        "lng": 130.3953376,
+        "category": "Ramen",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%98%EB%8F%84%ED%95%98%EB%82%98%EB%AA%A8%EC%BD%94%EC%8B%9C"
+      },
+      {
+        "name": "멘야잇시 라멘",
+        "lat": 33.5923001,
+        "lng": 130.4079304,
+        "category": "Ramen",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%98%EC%95%BC%EC%9E%87%EC%8B%9C%20%EB%9D%BC%EB%A9%98"
+      }
+    ],
+    "Attraction": [
+      {
+        "name": "오호리 공원",
+        "lat": 33.5862065,
+        "lng": 130.3764646,
+        "category": "Attraction",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%98%A4%ED%98%B8%EB%A6%AC%20%EA%B3%B5%EC%9B%90"
+      },
+      {
+        "name": "스이쿄텐만구",
+        "lat": 33.5926509,
+        "lng": 130.4018375,
+        "category": "Attraction",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%9D%B4%EC%BF%84%ED%85%90%EB%A7%8C%EA%B5%AC"
+      },
+      {
+        "name": "우미노나카미치 해변공원",
+        "lat": 33.6642785,
+        "lng": 130.3616,
+        "category": "Attraction",
+        "description": "",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EB%AF%B8%EB%85%B8%EB%82%98%EC%B9%B4%EB%AF%B8%EC%B9%98%20%ED%95%B4%EB%B3%80%EA%B3%B5%EC%9B%90"
+      }
+    ]
+  },
+  "metadata": {
+    "total_places": 57,
+    "total_categories": 10,
+    "source": "Google My Maps KML Export",
+    "generated": "2026-04-21T02:35:05.571946"
+  }
+};
+
+        // 간단한 검색 함수
+        function searchPlaces() {
+            const query = document.getElementById('search').value.toLowerCase();
+            const results = document.getElementById('results');
+            
+            if (!query) {
+                alert('키워드를 입력하세요');
+                return;
+            }
+            
+            const found = FUKUOKA_PLACES_DATA.places.filter(place => 
+                place.name.toLowerCase().includes(query) ||
+                place.category.toLowerCase().includes(query)
+            );
+            
+            if (found.length === 0) {
+                results.innerHTML = '<p>검색 결과가 없습니다.</p>';
+            } else {
+                results.innerHTML = `<p>${found.length}개 발견</p>` + found.map(p => `
+                    <div class="result">
+                        <h3>${p.name}</h3>
+                        <span class="category">${p.category}</span>
+                        ${p.description ? `<p>${p.description}</p>` : ''}
+                        <a href="${p.googleMapsUrl}" target="_blank">📍 Google Maps에서 보기</a>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // 초기화
+        document.getElementById('total').textContent = FUKUOKA_PLACES_DATA.metadata.total_places;
+    </script>
+</body>
+</html>

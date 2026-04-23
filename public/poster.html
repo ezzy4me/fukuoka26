@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUKUOKA — FIELD GUIDE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #FED0BC;
+            width: 100vw;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            cursor: crosshair;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Central Graphic */
+        .central-graphic {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(90deg);
+            height: 75vh;
+            mix-blend-mode: multiply;
+            z-index: 1;
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        /* Typography System */
+        .headline-xl {
+            font-family: Impact, 'Arial Black', sans-serif;
+            font-weight: 900;
+            font-size: 62px;
+            text-transform: uppercase;
+            letter-spacing: -0.06em;
+            color: #000;
+            line-height: 0.85;
+        }
+
+        .headline-l {
+            font-family: Impact, 'Arial Black', sans-serif;
+            font-weight: 900;
+            font-size: 48px;
+            text-transform: uppercase;
+            letter-spacing: -0.05em;
+            color: #000;
+            line-height: 0.9;
+        }
+
+        .headline-m {
+            font-family: 'Arial Black', sans-serif;
+            font-weight: 900;
+            font-size: 38px;
+            text-transform: uppercase;
+            color: #000;
+            line-height: 0.9;
+        }
+
+        .label-s {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: #000;
+            line-height: 0.85;
+        }
+
+        .label-xs {
+            font-family: 'Courier New', monospace;
+            font-size: 9px;
+            text-transform: uppercase;
+            color: #000;
+            line-height: 0.8;
+        }
+
+        .body-text {
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #000;
+            line-height: 0.85;
+        }
+
+        /* Black Box Highlight - Interactive */
+        .black-box {
+            background: #000;
+            color: #FFF;
+            padding: 3px 7px;
+            display: inline-block;
+            font-family: 'Arial Black', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 13px;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .black-box:hover {
+            background: #FFF;
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        .black-box-content {
+            background: #000;
+            color: #FED0BC;
+            padding: 5px 7px;
+            display: inline-block;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            line-height: 0.8;
+            margin-top: 2px;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+
+        .black-box-content:hover {
+            background: #FFF;
+            color: #000;
+            transform: translateX(3px);
+        }
+
+        /* Vertical Text */
+        .vertical-text {
+            writing-mode: vertical-rl;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #000;
+            letter-spacing: 0.05em;
+            line-height: 0.9;
+        }
+
+        .vertical-text-sm {
+            writing-mode: vertical-rl;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #000;
+            line-height: 0.85;
+        }
+
+        /* Hash Tag Style */
+        .hash-tag {
+            font-family: Impact, 'Arial Black', sans-serif;
+            font-weight: 900;
+            font-size: 72px;
+            text-transform: uppercase;
+            color: #000;
+            letter-spacing: -0.08em;
+            line-height: 0.8;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .hash-tag:hover {
+            text-shadow: 4px 4px 0 #000;
+            transform: scale(1.02);
+        }
+
+        /* Japanese Bottom Text */
+        .jp-bottom {
+            font-family: 'Hiragino Kaku Gothic Pro', 'Yu Gothic', 'Meiryo', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #000;
+            letter-spacing: 0.1em;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .jp-bottom:hover {
+            transform: scale(1.05);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+
+        /* Clickable Sections */
+        .clickable-section {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .clickable-section:hover {
+            transform: translateY(-2px);
+            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+        }
+
+        /* Absolute Positioned Elements */
+        #fukuoka-hash {
+            position: absolute;
+            top: 6%;
+            left: 3%;
+            z-index: 10;
+        }
+
+        #field-guide-label {
+            position: absolute;
+            top: 15%;
+            left: 4.5%;
+            z-index: 10;
+        }
+
+        #history-box {
+            position: absolute;
+            top: 18%;
+            left: 2.5%;
+            z-index: 10;
+            max-width: 300px;
+        }
+
+        #history-content {
+            display: block;
+            margin-top: 3px;
+            line-height: 1.05;
+        }
+
+        #departure-box {
+            position: absolute;
+            top: 48%;
+            left: 2.5%;
+            z-index: 10;
+            max-width: 280px;
+        }
+
+        #departure-content {
+            display: block;
+            margin-top: 3px;
+            line-height: 1.05;
+        }
+
+        #date-vertical {
+            position: absolute;
+            top: 28%;
+            left: 28px;
+            z-index: 10;
+        }
+
+        #places-list-left {
+            position: absolute;
+            top: 68%;
+            left: 3.5%;
+            z-index: 10;
+            max-width: 260px;
+        }
+
+        #travel-companion-title {
+            position: absolute;
+            top: 8%;
+            right: 2.5%;
+            z-index: 10;
+        }
+
+        #travel-companion-title:hover {
+            text-shadow: 3px 3px 0 #000;
+        }
+
+        #sangmin-vertical {
+            position: absolute;
+            top: 16%;
+            right: 45px;
+            z-index: 10;
+            font-size: 13px;
+        }
+
+        #flights-box {
+            position: absolute;
+            top: 20%;
+            right: 2.5%;
+            z-index: 10;
+            max-width: 290px;
+        }
+
+        #flights-content {
+            display: block;
+            margin-top: 3px;
+            line-height: 1.05;
+        }
+
+        #weather-box {
+            position: absolute;
+            top: 35%;
+            right: 2.5%;
+            z-index: 10;
+            max-width: 270px;
+        }
+
+        #weather-content {
+            display: block;
+            margin-top: 3px;
+            line-height: 1.05;
+        }
+
+        #phrases-box {
+            position: absolute;
+            top: 51%;
+            right: 2.5%;
+            z-index: 10;
+            max-width: 250px;
+        }
+
+        #phrases-content {
+            display: block;
+            margin-top: 3px;
+            line-height: 1.05;
+        }
+
+        #ai-tips-box {
+            position: absolute;
+            top: 67%;
+            right: 2.5%;
+            z-index: 10;
+            max-width: 290px;
+        }
+
+        #ai-tips-content {
+            display: block;
+            margin-top: 3px;
+            line-height: 1.05;
+        }
+
+        #places-list-right {
+            position: absolute;
+            top: 84%;
+            right: 4%;
+            z-index: 10;
+            max-width: 290px;
+        }
+
+        #contact-vertical {
+            position: absolute;
+            bottom: 8%;
+            left: 9%;
+            z-index: 10;
+        }
+
+        #links-vertical {
+            position: absolute;
+            bottom: 8%;
+            left: 13.5%;
+            z-index: 10;
+        }
+
+        #accommodation-box {
+            position: absolute;
+            bottom: 12%;
+            right: 8%;
+            z-index: 10;
+            max-width: 260px;
+        }
+
+        #accommodation-content {
+            display: block;
+            margin-top: 3px;
+            line-height: 1.05;
+        }
+
+        #jp-bottom-text {
+            position: absolute;
+            bottom: 3%;
+            right: 5%;
+            z-index: 10;
+        }
+
+        /* Scattered Labels */
+        #label-field-1 {
+            position: absolute;
+            top: 92%;
+            left: 35%;
+            z-index: 10;
+        }
+
+        #label-field-2 {
+            position: absolute;
+            top: 5%;
+            right: 28%;
+            z-index: 10;
+        }
+
+        #label-vertical-3 {
+            position: absolute;
+            top: 78%;
+            left: 24%;
+            z-index: 10;
+        }
+
+        /* Navigation Overlay */
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-overlay.active {
+            display: flex;
+        }
+
+        .nav-content {
+            color: #FED0BC;
+            font-family: Impact, 'Arial Black', sans-serif;
+            font-size: 48px;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .nav-item {
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover {
+            color: #FFF;
+            transform: scale(1.1);
+            text-shadow: 3px 3px 0 #FED0BC;
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 60px;
+            color: #FED0BC;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-nav:hover {
+            color: #FFF;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .headline-xl { font-size: 36px; }
+            .headline-l { font-size: 28px; }
+            .headline-m { font-size: 24px; }
+            .hash-tag { font-size: 42px; }
+            .jp-bottom { font-size: 18px; }
+            .body-text { font-size: 9px; }
+            .label-s { font-size: 10px; }
+            .label-xs { font-size: 8px; }
+
+            .central-graphic {
+                height: 60vh;
+            }
+
+            #date-vertical,
+            #sangmin-vertical {
+                writing-mode: horizontal-tb;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Central Graphic (Placeholder) -->
+    <svg class="central-graphic" viewBox="0 0 100 400" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="50" width="15" height="120" fill="#000" opacity="0.2"/>
+        <rect x="40" y="30" width="12" height="140" fill="#000" opacity="0.25"/>
+        <rect x="55" y="70" width="18" height="100" fill="#000" opacity="0.15"/>
+        <rect x="45" y="20" width="8" height="160" fill="#000" opacity="0.3"/>
+        <rect x="25" y="40" width="20" height="130" fill="#000" opacity="0.2"/>
+        <circle cx="50" cy="180" r="25" fill="#000" opacity="0.1"/>
+        <rect x="35" y="200" width="10" height="80" fill="#000" opacity="0.2"/>
+        <rect x="50" y="220" width="14" height="60" fill="#000" opacity="0.25"/>
+    </svg>
+
+    <!-- Left Cluster -->
+    <div id="fukuoka-hash" class="hash-tag clickable-section" onclick="showNav()"># Fukuoka</div>
+    <div id="field-guide-label" class="label-s">FIELD GUIDE / フィールドガイド</div>
+
+    <div id="history-box" class="clickable-section">
+        <span class="black-box">HISTORY GUIDE</span>
+        <div id="history-content" class="black-box-content">
+            HAKATA OLD TOWN ORIGINS (7TH CENTURY)<br>
+            MONGOL INVASIONS DEFENSE (1274, 1281)<br>
+            TRADING PORT RENAISSANCE (16TH CENTURY)<br>
+            MODERN FUKUOKA MERGER (1889)<br>
+            TECH HUB TRANSFORMATION (2010S)
+        </div>
+    </div>
+
+    <div id="departure-box" class="clickable-section">
+        <span class="black-box">DEPARTURE PREP</span>
+        <div id="departure-content" class="black-box-content">
+            PASSPORT + VISA CHECK<br>
+            JR PASS BOOKING<br>
+            POCKET WIFI RENTAL<br>
+            TRAVEL INSURANCE<br>
+            IC CARD (SUICA/PASMO)
+        </div>
+    </div>
+
+    <div id="date-vertical" class="vertical-text">2026. 4. 27-29</div>
+
+    <div id="places-list-left" class="label-xs">
+        RAMEN・MENTAIKO・YATAI・OHORI PARK・DAZAIFU・CANAL CITY・MOMOCHI BEACH・NAKASU・TENJIN・HAKATA STATION・KAWABATA・KUSHIDA SHRINE・FUKUOKA TOWER
+    </div>
+
+    <!-- Right Cluster -->
+    <div id="travel-companion-title" class="headline-l clickable-section">TRAVEL<br>COMPANION</div>
+    <div id="sangmin-vertical" class="vertical-text">SANGMIN SONG</div>
+
+    <div id="flights-box" class="clickable-section">
+        <span class="black-box">FLIGHTS</span>
+        <div id="flights-content" class="black-box-content">
+            ICN → FUK: 2026.4.27, 09:30<br>
+            FUK → ICN: 2026.4.29, 18:45<br>
+            AIRLINE: KOREAN AIR<br>
+            DURATION: 1H 30M
+        </div>
+    </div>
+
+    <div id="weather-box" class="clickable-section">
+        <span class="black-box">WEATHER</span>
+        <div id="weather-content" class="black-box-content">
+            APRIL AVERAGE: 16°C<br>
+            RAINY SEASON: JUNE-JULY<br>
+            PACK: LIGHT JACKET<br>
+            UV INDEX: MODERATE<br>
+            HUMIDITY: 65-70%
+        </div>
+    </div>
+
+    <div id="phrases-box" class="clickable-section">
+        <span class="black-box">PHRASES</span>
+        <div id="phrases-content" class="black-box-content">
+            ありがとうございます (ARIGATOU GOZAIMASU)<br>
+            すみません (SUMIMASEN)<br>
+            いくらですか (IKURA DESUKA)<br>
+            美味しい (OISHII)<br>
+            ください (KUDASAI)
+        </div>
+    </div>
+
+    <div id="ai-tips-box" class="clickable-section">
+        <span class="black-box">AI TIPS</span>
+        <div id="ai-tips-content" class="black-box-content">
+            USE PAPAGO FOR MENU TRANSLATION<br>
+            GOOGLE LENS FOR SIGNAGE<br>
+            CHATGPT FOR ITINERARY TWEAKS<br>
+            NAVER MAP FOR NAVIGATION<br>
+            DEEPL FOR DOCUMENTS
+        </div>
+    </div>
+
+    <div id="places-list-right" class="body-text">
+        FUKUOKA TOWER / UMINONAKAMICHI / KUSHIDA SHRINE / MAIZURU PARK / OHORI PARK / MARINOA CITY / FUKUOKA CASTLE / SUMIYOSHI SHRINE / TOCHOJI TEMPLE / SHOFUKUJI TEMPLE / MOMOCHI SEASIDE PARK
+    </div>
+
+    <!-- Bottom Strip -->
+    <div id="contact-vertical" class="vertical-text-sm">CONTACT@FUKUOKA.GUIDE / +81-90-1234-5678</div>
+    <div id="links-vertical" class="vertical-text-sm">WWW.FUKUOKA-TRAVEL.JP</div>
+
+    <div id="accommodation-box" class="clickable-section">
+        <span class="black-box">ACCOMMODATION</span>
+        <div id="accommodation-content" class="black-box-content">
+            HOTEL OKURA FUKUOKA<br>
+            1-1-82 SHIMOKAWABATA, HAKATA-KU<br>
+            ☎ +81-92-262-1111
+        </div>
+    </div>
+
+    <div id="jp-bottom-text" class="jp-bottom">ばり好きっちゃん</div>
+
+    <!-- Scattered Labels -->
+    <div id="label-field-1" class="label-xs">KYUSHU GATEWAY</div>
+    <div id="label-field-2" class="label-xs">EST. 2026</div>
+    <div id="label-vertical-3" class="vertical-text-sm">PUNK AESTHETIC</div>
+
+    <!-- Navigation Overlay -->
+    <div class="nav-overlay" id="navOverlay">
+        <span class="close-nav" onclick="closeNav()">×</span>
+        <div class="nav-content">
+            <div class="nav-item" onclick="navigate('checklist')">CHECKLIST</div>
+            <div class="nav-item" onclick="navigate('places')">PLACES</div>
+            <div class="nav-item" onclick="navigate('maps')">MAPS</div>
+            <div class="nav-item" onclick="navigate('guide')">IN FUKUOKA</div>
+        </div>
+    </div>
+
+    <script>
+        function showNav() {
+            document.getElementById('navOverlay').classList.add('active');
+        }
+
+        function closeNav() {
+            document.getElementById('navOverlay').classList.remove('active');
+        }
+
+        function navigate(page) {
+            const pages = {
+                'checklist': 'checklist.html',
+                'places': 'places-test.html',
+                'maps': 'maps-url-test.html',
+                'guide': 'in-fukuoka.html'
+            };
+
+            if (pages[page]) {
+                window.location.href = pages[page];
+            }
+        }
+
+        // Add click handlers for sections
+        document.querySelectorAll('.clickable-section').forEach(section => {
+            section.addEventListener('click', function(e) {
+                if (e.target.classList.contains('black-box') ||
+                    e.target.classList.contains('black-box-content')) {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 100);
+                }
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeNav();
+            }
+            if (e.key === 'm' || e.key === 'M') {
+                showNav();
+            }
+        });
+
+        // Random subtle animations
+        setInterval(() => {
+            const labels = document.querySelectorAll('.label-xs, .label-s');
+            const random = labels[Math.floor(Math.random() * labels.length)];
+            if (random) {
+                random.style.transform = 'translateY(-1px)';
+                setTimeout(() => {
+                    random.style.transform = '';
+                }, 200);
+            }
+        }, 3000);
+    </script>
+
+</body>
+</html>

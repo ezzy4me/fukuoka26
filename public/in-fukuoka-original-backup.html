@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Fukuoka — Travel Companion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #f4efe6;
+            --indigo: #2e4a62;
+            --sakura: #e8a5a0;
+            --sumi: #1a1a1a;
+            --ochre: #c8a882;
+            --accent-red: #c44536;
+            --accent-blue: #4a7c9e;
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--cream);
+            color: var(--sumi);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(244, 239, 230, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(46, 74, 98, 0.1);
+            padding: 1rem 2rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--indigo);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--indigo);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent-red);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--indigo);
+            transition: all 0.3s;
+        }
+
+        /* Hero */
+        .hero {
+            margin-top: 70px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--indigo);
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            color: var(--indigo);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--ochre);
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Section */
+        section {
+            margin-bottom: 6rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--sakura);
+            line-height: 1;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 600;
+            color: var(--indigo);
+        }
+
+        /* Flights */
+        .flights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .ticket {
+            background: white;
+            border: 2px dashed var(--indigo);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ticket::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--accent-red) 0px,
+                var(--accent-red) 20px,
+                transparent 20px,
+                transparent 40px
+            );
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(46, 74, 98, 0.2);
+        }
+
+        .flight-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-red);
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .flight-num:hover {
+            opacity: 0.7;
+        }
+
+        .airline {
+            font-size: 0.9rem;
+            color: var(--ochre);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .route {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 2rem 0;
+        }
+
+        .airport {
+            text-align: center;
+        }
+
+        .airport-code {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--indigo);
+            line-height: 1;
+        }
+
+        .airport-name {
+            font-size: 0.8rem;
+            color: var(--ochre);
+            margin-top: 0.5rem;
+        }
+
+        .route-arrow {
+            font-size: 2rem;
+            color: var(--sakura);
+        }
+
+        .flight-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .detail-item {
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--cream);
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--ochre);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--indigo);
+        }
+
+        /* Weather */
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .weather-card {
+            background: white;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid var(--indigo);
+            transition: transform 0.3s;
+        }
+
+        .weather-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .weather-day {
+            font-size: 0.9rem;
+            color: var(--ochre);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+        }
+
+        .weather-date {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--indigo);
+            margin-bottom: 1rem;
+        }
+
+        .weather-icon {
+            font-size: 3rem;
+            margin: 1rem 0;
+        }
+
+        .weather-temp {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--indigo);
+            margin: 1rem 0;
+        }
+
+        .weather-temp .low {
+            font-size: 1.5rem;
+            color: var(--ochre);
+        }
+
+        .weather-desc {
+            font-size: 0.9rem;
+            color: var(--sakura);
+            text-transform: capitalize;
+        }
+
+        .weather-note {
+            background: white;
+            padding: 2rem;
+            border-left: 6px solid var(--sakura);
+        }
+
+        .weather-note p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .weather-source {
+            font-size: 0.8rem;
+            color: var(--ochre);
+            font-style: italic;
+        }
+
+        .weather-loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--ochre);
+            font-style: italic;
+        }
+
+        /* Weather Chart */
+        .weather-chart-container {
+            background: #1a1a1a;
+            border: 2px solid var(--indigo);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+        }
+
+        .chart-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .chart-wrapper canvas {
+            max-width: 100%;
+        }
+
+        /* Phrases */
+        .phrases-search {
+            margin-bottom: 1.5rem;
+        }
+
+        .phrases-search input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--indigo);
+            background: white;
+            font-size: 1rem;
+            font-family: 'Work Sans', sans-serif;
+            color: var(--sumi);
+        }
+
+        .phrases-search input:focus {
+            outline: none;
+            border-color: var(--accent-red);
+        }
+
+        .phrases-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--indigo);
+            background: white;
+            color: var(--indigo);
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--indigo);
+            color: white;
+        }
+
+        .phrases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .phrase-item {
+            background: white;
+            border: 2px solid var(--indigo);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .phrase-item:hover {
+            transform: translateX(8px);
+        }
+
+        .phrase-text {
+            flex: 1;
+        }
+
+        .japanese-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--indigo);
+            margin-bottom: 0.25rem;
+        }
+
+        .romaji {
+            font-size: 0.85rem;
+            color: var(--ochre);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .korean {
+            font-size: 0.9rem;
+            color: var(--sumi);
+        }
+
+        .phrase-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .phrase-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--indigo);
+            background: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .phrase-btn:hover {
+            background: var(--indigo);
+            color: white;
+        }
+
+        .phrase-btn.favorite.active {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            color: white;
+        }
+
+        /* AI Generator */
+        .ai-generator {
+            background: white;
+            padding: 3rem;
+            border: 3px solid var(--indigo);
+            border-radius: 0;
+        }
+
+        .ai-generator h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--indigo);
+            margin-bottom: 1rem;
+        }
+
+        .ai-input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .ai-input-group input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--indigo);
+            font-size: 1rem;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .ai-generate-btn {
+            padding: 1rem 2rem;
+            background: var(--indigo);
+            color: white;
+            border: none;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .ai-generate-btn:hover {
+            background: var(--accent-red);
+        }
+
+        .ai-output {
+            display: none;
+            padding: 2rem;
+            background: var(--cream);
+            border-left: 4px solid var(--sakura);
+        }
+
+        .ai-output.active {
+            display: block;
+        }
+
+        .ai-output h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--indigo);
+            margin-bottom: 1rem;
+        }
+
+        .ai-rec-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(46, 74, 98, 0.2);
+        }
+
+        .ai-rec-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .ai-rec-item strong {
+            color: var(--accent-red);
+            font-size: 1.1rem;
+        }
+
+        /* Enhanced AI result cards */
+        .ai-rec-card {
+            background: white;
+            border: 2px solid var(--indigo);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .ai-rec-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .ai-rec-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .ai-rec-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--indigo);
+            margin-bottom: 0.25rem;
+        }
+
+        .ai-rec-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--sakura);
+            color: white;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+
+        .ai-rec-description {
+            color: var(--sumi);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .ai-rec-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .ai-map-btn {
+            flex: 1;
+            min-width: 180px;
+            padding: 0.75rem 1rem;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .ai-map-btn:hover {
+            background: var(--indigo);
+        }
+
+        .ai-copy-coords {
+            padding: 0.75rem 1rem;
+            background: white;
+            color: var(--indigo);
+            border: 2px solid var(--indigo);
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ai-copy-coords:hover {
+            background: var(--indigo);
+            color: white;
+        }
+
+        .ai-no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--ochre);
+            font-style: italic;
+        }
+
+        .ai-results-count {
+            color: var(--ochre);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--indigo);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 6rem;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(244, 239, 230, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .flights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-input-group {
+                flex-direction: column;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <div class="nav-brand serif">In Fukuoka</div>
+            <ul class="nav-links">
+                <li><a href="index.html">메인으로 돌아가기</a></li>
+                <li><a href="history.html">역사</a></li>
+                <li><a href="checklist.html">출발 준비</a></li>
+                <li><a href="#flights">Flights</a></li>
+                <li><a href="#weather">Weather</a></li>
+                <li><a href="#phrases">Phrases</a></li>
+                <li><a href="#ai-generator">AI Tips</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>In Fukuoka</h1>
+        <p class="subtitle">여행 중 실용 정보</p>
+    </div>
+
+    <div class="container">
+
+        <!-- Section 1: Flights -->
+        <section id="flights" class="fade-in">
+            <div class="section-header">
+                <span class="section-num">01</span>
+                <h2 class="section-title">Flight Information</h2>
+            </div>
+            <div class="flights-grid">
+                <!-- Outbound -->
+                <div class="ticket">
+                    <div class="ticket-header">
+                        <a href="https://share.google/tkRP3s0PMlw7qpgpG" target="_blank" class="flight-num">TW201</a>
+                        <div class="airline">T'way Air</div>
+                    </div>
+                    <div class="route">
+                        <div class="airport">
+                            <div class="airport-code">ICN</div>
+                            <div class="airport-name">Incheon</div>
+                        </div>
+                        <div class="route-arrow">→</div>
+                        <div class="airport">
+                            <div class="airport-code">FUK</div>
+                            <div class="airport-name">Fukuoka</div>
+                        </div>
+                    </div>
+                    <div class="flight-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Departure</div>
+                            <div class="detail-value">April 27, 10:00</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Arrival</div>
+                            <div class="detail-value">April 27, 11:25</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Duration</div>
+                            <div class="detail-value">1h 25m</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Outbound</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inbound -->
+                <div class="ticket">
+                    <div class="ticket-header">
+                        <a href="https://share.google/OgcfkMxUx70ytV7wT" target="_blank" class="flight-num">TW202</a>
+                        <div class="airline">T'way Air</div>
+                    </div>
+                    <div class="route">
+                        <div class="airport">
+                            <div class="airport-code">FUK</div>
+                            <div class="airport-name">Fukuoka</div>
+                        </div>
+                        <div class="route-arrow">→</div>
+                        <div class="airport">
+                            <div class="airport-code">ICN</div>
+                            <div class="airport-name">Incheon</div>
+                        </div>
+                    </div>
+                    <div class="flight-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Departure</div>
+                            <div class="detail-value">April 29, 20:30</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Arrival</div>
+                            <div class="detail-value">April 29, 22:00</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Duration</div>
+                            <div class="detail-value">1h 30m</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Inbound</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Weather -->
+        <section id="weather" class="fade-in">
+            <div class="section-header">
+                <span class="section-num">02</span>
+                <h2 class="section-title">Weather Forecast</h2>
+            </div>
+
+            <!-- Weather Chart -->
+            <div class="weather-chart-container">
+                <h3 class="chart-title">72-Hour Temperature & Precipitation Forecast</h3>
+                <div class="chart-wrapper">
+                    <canvas id="weatherChart"></canvas>
+                </div>
+            </div>
+
+            <div class="weather-grid" id="weatherGrid">
+                <!-- Weather cards will be loaded dynamically -->
+                <div class="weather-loading">Loading weather data...</div>
+            </div>
+
+            <div class="weather-note">
+                <p id="weatherAdvice">
+                    날씨 데이터를 불러오는 중입니다...
+                </p>
+                <div class="weather-source">
+                    데이터 출처: Open-Meteo (실시간)
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Survival Phrases -->
+        <section id="phrases" class="fade-in">
+            <div class="section-header">
+                <span class="section-num">03</span>
+                <h2 class="section-title">Survival Japanese</h2>
+            </div>
+
+            <div class="phrases-search">
+                <input type="text" id="phraseSearch" placeholder="표현 검색 (일본어, 로마자, 한국어)...">
+            </div>
+
+            <div class="phrases-filter">
+                <button class="filter-btn active" data-filter="all">전체</button>
+                <button class="filter-btn" data-filter="greeting">인사</button>
+                <button class="filter-btn" data-filter="order">주문</button>
+                <button class="filter-btn" data-filter="question">질문</button>
+                <button class="filter-btn" data-filter="payment">계산</button>
+            </div>
+
+            <div class="phrases-grid" id="phrasesGrid">
+                <!-- Phrases will be dynamically loaded -->
+            </div>
+        </section>
+
+        <!-- Section 4: AI Generator -->
+        <section id="ai-generator" class="fade-in">
+            <div class="ai-generator">
+                <h3>AI 여행 팁 제너레이터 (KML 기반)</h3>
+                <p style="margin-bottom: 1.5rem; color: var(--ochre);">
+                    장소 이름이나 카테고리로 검색하세요
+                    <br>
+                    <small>총 <strong id="totalPlacesCount">0</strong>개 장소 | 카테고리: Ramen, Cafe & Bakery, Sushi & Meal, Yakiniku, Hamburg, Izakaya, Okonomiyaki, Store, Attraction</small>
+                </p>
+                <div class="ai-input-group">
+                    <input type="text" id="aiInput" placeholder="키워드 입력 (한글, 일본어, 영어 가능)..."
+                           onkeypress="if(event.key==='Enter') generateRecommendations()">
+                    <button class="ai-generate-btn" onclick="generateRecommendations()">검색</button>
+                </div>
+                <div class="ai-output" id="aiOutput">
+                    <h4>검색 결과</h4>
+                    <div class="ai-results-count" id="resultsCount"></div>
+                    <div class="ai-recommendations" id="aiRecommendations"></div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Fukuoka Field Guide — Spring 2026</p>
+        <p>후쿠오카 여행의 모든 것, 디지털 컴패니언</p>
+    </footer>
+
+    <script>
+        // Weather API (Open-Meteo)
+        const FUKUOKA_LAT = 33.5904;
+        const FUKUOKA_LON = 130.4017;
+
+        // Weather code to description mapping
+        const weatherCodes = {
+            0: 'Clear',
+            1: 'Mainly Clear',
+            2: 'Partly Cloudy',
+            3: 'Cloudy',
+            45: 'Foggy',
+            48: 'Foggy',
+            51: 'Light Drizzle',
+            53: 'Drizzle',
+            55: 'Heavy Drizzle',
+            61: 'Light Rain',
+            63: 'Rain',
+            65: 'Heavy Rain',
+            71: 'Light Snow',
+            73: 'Snow',
+            75: 'Heavy Snow',
+            77: 'Snow Grains',
+            80: 'Light Showers',
+            81: 'Showers',
+            82: 'Heavy Showers',
+            85: 'Light Snow Showers',
+            86: 'Snow Showers',
+            95: 'Thunderstorm',
+            96: 'Thunderstorm with Hail',
+            99: 'Heavy Thunderstorm'
+        };
+
+        async function loadWeather() {
+            const grid = document.getElementById('weatherGrid');
+            const adviceEl = document.getElementById('weatherAdvice');
+
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${FUKUOKA_LAT}&longitude=${FUKUOKA_LON}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Asia/Tokyo&forecast_days=3`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (!data.daily) {
+                    throw new Error('Invalid API response');
+                }
+
+                const { daily } = data;
+                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+                grid.innerHTML = daily.time.slice(0, 3).map((date, i) => {
+                    const dateObj = new Date(date);
+                    const dayName = days[dateObj.getDay()];
+                    const maxTemp = Math.round(daily.temperature_2m_max[i]);
+                    const minTemp = Math.round(daily.temperature_2m_min[i]);
+                    const weatherCode = daily.weathercode[i];
+                    const weatherDesc = weatherCodes[weatherCode] || 'Unknown';
+
+                    return `
+                        <div class="weather-card">
+                            <div class="weather-day">${dayName}</div>
+                            <div class="weather-date">${dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                            <div class="weather-temp">${maxTemp}° <span class="low">/ ${minTemp}°</span></div>
+                            <div class="weather-desc">${weatherDesc}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Generate clothing advice based on temperature
+                const avgTemp = Math.round((daily.temperature_2m_max[0] + daily.temperature_2m_min[0]) / 2);
+                let advice = '';
+
+                if (avgTemp < 10) {
+                    advice = '<strong>옷차림 권장:</strong> 쌀쌀합니다. 두꺼운 외투와 목도리를 준비하세요.';
+                } else if (avgTemp < 15) {
+                    advice = '<strong>옷차림 권장:</strong> 선선합니다. 가벼운 재킷이나 가디건을 준비하세요.';
+                } else if (avgTemp < 20) {
+                    advice = '<strong>옷차림 권장:</strong> 봄 날씨입니다. 아침저녁으로 가벼운 겉옷이 필요합니다.';
+                } else if (avgTemp < 25) {
+                    advice = '<strong>옷차림 권장:</strong> 따뜻합니다. 반팔에 얇은 겉옷 정도면 충분합니다.';
+                } else {
+                    advice = '<strong>옷차림 권장:</strong> 더울 수 있습니다. 가벼운 옷과 자외선 차단제를 준비하세요.';
+                }
+
+                adviceEl.innerHTML = `${advice} 걷기 편한 신발 필수.`;
+
+            } catch (error) {
+                console.error('Weather API error:', error);
+                grid.innerHTML = '<div class="weather-loading">날씨 정보를 불러올 수 없습니다. 나중에 다시 시도해주세요.</div>';
+                adviceEl.innerHTML = '날씨 정보를 불러오는 중 오류가 발생했습니다.';
+            }
+        }
+
+        let weatherChartInstance = null;
+
+        async function loadWeatherChart() {
+            const canvas = document.getElementById('weatherChart');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${FUKUOKA_LAT}&longitude=${FUKUOKA_LON}&hourly=temperature_2m,weathercode,precipitation_probability&timezone=Asia/Tokyo&forecast_days=3`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (!data.hourly) {
+                    throw new Error('Invalid API response');
+                }
+
+                const { hourly } = data;
+
+                // 라벨 생성: 시간과 요일 조합
+                const labels = hourly.time.slice(0, 72).map((time, i) => {
+                    const date = new Date(time);
+                    const hour = date.getHours();
+                    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                    const dayName = dayNames[date.getDay()];
+
+                    // 자정마다 요일 표시, 나머지는 시간만
+                    if (hour === 0) {
+                        return `${dayName} ${hour}:00`;
+                    }
+                    return `${hour}:00`;
+                });
+
+                // 온도 데이터
+                const temperatures = hourly.temperature_2m.slice(0, 72);
+
+                // 강수확률 데이터 (폴백: 0%)
+                const precipProb = hourly.precipitation_probability?.slice(0, 72) || Array(72).fill(0);
+
+                // 기존 차트가 있으면 제거
+                if (weatherChartInstance) {
+                    weatherChartInstance.destroy();
+                }
+
+                // Chart.js 차트 생성
+                weatherChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Temperature (°C)',
+                                data: temperatures,
+                                borderColor: '#ffd700',
+                                backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 5,
+                                pointBackgroundColor: '#ffd700',
+                                pointBorderColor: '#1a1a1a',
+                                pointBorderWidth: 2,
+                                yAxisID: 'y-temp'
+                            },
+                            {
+                                label: 'Precipitation (%)',
+                                data: precipProb,
+                                borderColor: '#4a7c9e',
+                                backgroundColor: 'rgba(74, 124, 158, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 5,
+                                pointBackgroundColor: '#4a7c9e',
+                                pointBorderColor: '#1a1a1a',
+                                pointBorderWidth: 2,
+                                yAxisID: 'y-precip'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#ffd700',
+                                    font: {
+                                        size: 12
+                                    },
+                                    usePointStyle: true,
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(26, 26, 26, 0.95)',
+                                titleColor: '#ffd700',
+                                bodyColor: '#ffffff',
+                                borderColor: '#ffd700',
+                                borderWidth: 1,
+                                displayColors: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.dataset.label || '';
+                                        const value = context.parsed.y;
+                                        if (label.includes('Temperature')) {
+                                            return `${label}: ${value}°C`;
+                                        } else {
+                                            return `${label}: ${value}%`;
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)',
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    color: '#999',
+                                    maxRotation: 45,
+                                    minRotation: 45,
+                                    autoSkip: true,
+                                    maxTicksLimit: 24
+                                }
+                            },
+                            'y-temp': {
+                                type: 'linear',
+                                position: 'left',
+                                grid: {
+                                    color: 'rgba(255, 215, 0, 0.1)',
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    color: '#ffd700',
+                                    callback: function(value) {
+                                        return value + '°C';
+                                    }
+                                }
+                            },
+                            'y-precip': {
+                                type: 'linear',
+                                position: 'right',
+                                min: 0,
+                                max: 100,
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#4a7c9e',
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        },
+                        interaction: {
+                            mode: 'nearest',
+                            axis: 'x',
+                            intersect: false
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error('Weather Chart API error:', error);
+                canvas.parentElement.innerHTML = '<div style="color: #ffd700; text-align: center; padding: 3rem;">날씨 차트를 불러올 수 없습니다.</div>';
+            }
+        }
+
+        // ============================================================
+        // FUKUOKA PLACES DATA (Auto-generated from KML)
+        // ============================================================
+        // To regenerate: python3 mapinfo/kml_to_json.py
+
+        // Auto-generated from KML - DO NOT EDIT MANUALLY
+        // Generated: 2026-04-21T00:33:22
+        // Total places: 57
+
+        const FUKUOKA_PLACES_DATA = {
+          "places": [
+            {
+              "name": "타카미 스시",
+              "lat": 33.5846346,
+              "lng": 130.3951329,
+              "category": "Sushi & Meal",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%83%80%EC%B9%B4%EB%AF%B8%20%EC%8A%A4%EC%8B%9C+fukuoka"
+            },
+            {
+              "name": "스시사카바 사시스 하카타마잉구점",
+              "lat": 33.5906798,
+              "lng": 130.4206962,
+              "category": "Sushi & Meal",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%8B%9C%EC%82%AC%EC%B9%B4%EB%B0%94%20%EC%82%AC%EC%8B%9C%EC%8A%A4%20%ED%95%98%EC%B9%B4%ED%83%80%EB%A7%88%EC%9E%89%EA%B5%AC%EC%A0%90+fukuoka"
+            },
+            {
+              "name": "旨鮨stand O",
+              "lat": 33.5913748,
+              "lng": 130.3928677,
+              "category": "Sushi & Meal",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%97%A8%E9%AE%A8stand%20O+fukuoka"
+            },
+            {
+              "name": "우오츄",
+              "lat": 33.5854051,
+              "lng": 130.3977491,
+              "category": "Sushi & Meal",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EC%98%A4%EC%B8%84+fukuoka"
+            },
+            {
+              "name": "쇼쿠도 미츠",
+              "lat": 33.5830234,
+              "lng": 130.4083219,
+              "category": "Sushi & Meal",
+              "description": "굉장히 가고 싶음",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%87%BC%EC%BF%A0%EB%8F%84%20%EB%AF%B8%EC%B8%A0+fukuoka"
+            },
+            {
+              "name": "殊代 cotoshiro（ことしろ）",
+              "lat": 33.5880955,
+              "lng": 130.3923513,
+              "category": "Sushi & Meal",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%AE%8A%E4%BB%A3%20cotoshiro%EF%BC%88%E3%81%93%E3%81%A8%E3%81%97%E3%82%8D%EF%BC%89+fukuoka"
+            },
+            {
+              "name": "텐텐테이",
+              "lat": 33.594518,
+              "lng": 130.400779,
+              "category": "Sushi & Meal",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4+fukuoka"
+            },
+            {
+              "name": "부타 매니아동 이나다야 선",
+              "lat": 33.5829599,
+              "lng": 130.407105,
+              "category": "Sushi & Meal",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B6%80%ED%83%80%20%EB%A7%A4%EB%8B%88%EC%95%84%EB%8F%99%20%EC%9D%B4%EB%82%98%EB%8B%A4%EC%95%BC%20%EC%84%A0+fukuoka"
+            },
+            {
+              "name": "시즈솜 카페",
+              "lat": 33.5727588,
+              "lng": 130.4162288,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EC%A6%88%EC%86%9C%20%EC%B9%B4%ED%8E%98+fukuoka"
+            },
+            {
+              "name": "OYATUYA.Uの喫茶",
+              "lat": 33.581072,
+              "lng": 130.4036796,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=OYATUYA.U%E3%81%AE%E5%96%AB%E8%8C%B6+fukuoka"
+            },
+            {
+              "name": "굿 업 커피",
+              "lat": 33.5774746,
+              "lng": 130.4065069,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EA%B5%BF%20%EC%97%85%20%EC%BB%A4%ED%94%BC+fukuoka"
+            },
+            {
+              "name": "시로가네사보",
+              "lat": 33.5783366,
+              "lng": 130.4053765,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EB%A1%9C%EA%B0%80%EB%84%A4%EC%82%AC%EB%B3%B4+fukuoka"
+            },
+            {
+              "name": "APOC COFFEE",
+              "lat": 33.5885316,
+              "lng": 130.4166046,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=APOC%20COFFEE+fukuoka"
+            },
+            {
+              "name": "이시무라 만세이도 본점",
+              "lat": 33.595926,
+              "lng": 130.404348,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9D%B4%EC%8B%9C%EB%AC%B4%EB%9D%BC%20%EB%A7%8C%EC%84%B8%EC%9D%B4%EB%8F%84%20%EB%B3%B8%EC%A0%90+fukuoka"
+            },
+            {
+              "name": "TOFFEE park",
+              "lat": 33.592068,
+              "lng": 130.4043927,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=TOFFEE%20park+fukuoka"
+            },
+            {
+              "name": "칸미도코로 타키무라",
+              "lat": 33.5952019,
+              "lng": 130.4057173,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%B9%B8%EB%AF%B8%EB%8F%84%EC%BD%94%EB%A1%9C%20%ED%83%80%ED%82%A4%EB%AC%B4%EB%9D%BC+fukuoka"
+            },
+            {
+              "name": "파크 사우스 샌드위치 후쿠오카",
+              "lat": 33.58961,
+              "lng": 130.3947959,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%8C%8C%ED%81%AC%20%EC%82%AC%EC%9A%B0%EC%8A%A4%20%EC%83%8C%EB%93%9C%EC%9C%84%EC%B9%98%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4+fukuoka"
+            },
+            {
+              "name": "Henri Charpentier",
+              "lat": 33.5896847,
+              "lng": 130.4200838,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Henri%20Charpentier+fukuoka"
+            },
+            {
+              "name": "다코멧카",
+              "lat": 33.5874397,
+              "lng": 130.4193439,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8B%A4%EC%BD%94%EB%A9%A7%EC%B9%B4+fukuoka"
+            },
+            {
+              "name": "빵 스톡 텐진점",
+              "lat": 33.5916517,
+              "lng": 130.4040419,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B9%B5%20%EC%8A%A4%ED%86%A1%20%ED%85%90%EC%A7%84%EC%A0%90+fukuoka"
+            },
+            {
+              "name": "The CRAFT Bar and Grill",
+              "lat": 33.5894461,
+              "lng": 130.3949854,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20CRAFT%20Bar%20and%20Grill+fukuoka"
+            },
+            {
+              "name": "375 cafe & bar",
+              "lat": 33.5766502,
+              "lng": 130.4040751,
+              "category": "Cafe & Bakery",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=375%20cafe%20%26%20bar+fukuoka"
+            },
+            {
+              "name": "리치몬드 호텔 텐진 니시도리",
+              "lat": 33.5893232,
+              "lng": 130.3965747,
+              "category": "Base",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A6%AC%EC%B9%98%EB%AA%AC%EB%93%9C%20%ED%98%B8%ED%85%94%20%ED%85%90%EC%A7%84%20%EB%8B%88%EC%8B%9C%EB%8F%84%EB%A6%AC+fukuoka"
+            },
+            {
+              "name": "히키니쿠토코메 이마이즈미",
+              "lat": 33.5836059,
+              "lng": 130.3991432,
+              "category": "Hamburg",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%9E%88%ED%82%A4%EB%8B%88%EC%BF%A0%ED%86%A0%EC%BD%94%EB%A9%94%20%EC%9D%B4%EB%A7%88%EC%9D%B4%EC%A6%88%EB%AF%B8+fukuoka"
+            },
+            {
+              "name": "Messi",
+              "lat": 33.654869,
+              "lng": 130.4459639,
+              "category": "Hamburg",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Messi+fukuoka"
+            },
+            {
+              "name": "Tomatobatake",
+              "lat": 33.594681,
+              "lng": 130.399314,
+              "category": "Hamburg",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Tomatobatake+fukuoka"
+            },
+            {
+              "name": "쟈포네",
+              "lat": 33.5978899,
+              "lng": 130.4028281,
+              "category": "Hamburg",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9F%88%ED%8F%AC%EB%84%A4+fukuoka"
+            },
+            {
+              "name": "비스트로 오",
+              "lat": 33.5918312,
+              "lng": 130.3939625,
+              "category": "Hamburg",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B9%84%EC%8A%A4%ED%8A%B8%EB%A1%9C%20%EC%98%A4+fukuoka"
+            },
+            {
+              "name": "키와미야 하카타역 지하가점",
+              "lat": 33.5909166,
+              "lng": 130.4193234,
+              "category": "Hamburg",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%AD%20%EC%A7%80%ED%95%98%EA%B0%80%EC%A0%90+fukuoka"
+            },
+            {
+              "name": "시치린 야키니쿠 유키",
+              "lat": 33.5933937,
+              "lng": 130.4046507,
+              "category": "Yakiniku",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EC%B9%98%EB%A6%B0%20%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%EC%9C%A0%ED%82%A4+fukuoka"
+            },
+            {
+              "name": "焼肉 溜 Tamari",
+              "lat": 33.587413,
+              "lng": 130.394047,
+              "category": "Yakiniku",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%20%E6%BA%9C%20Tamari+fukuoka"
+            },
+            {
+              "name": "야키니쿠 하나비 2호점",
+              "lat": 33.5892691,
+              "lng": 130.4044363,
+              "category": "Yakiniku",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%95%98%EB%82%98%EB%B9%84%202%ED%98%B8%EC%A0%90+fukuoka"
+            },
+            {
+              "name": "야키니쿠 키와미야 다이묘점",
+              "lat": 33.5869122,
+              "lng": 130.3949032,
+              "category": "Yakiniku",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%EB%8B%A4%EC%9D%B4%EB%AC%98%EC%A0%90+fukuoka"
+            },
+            {
+              "name": "야키니쿠 타규 하카타에키미나미점",
+              "lat": 33.5856452,
+              "lng": 130.4237455,
+              "category": "Yakiniku",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%83%80%EA%B7%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%90%ED%82%A4%EB%AF%B8%EB%82%98%EB%AF%B8%EC%A0%90+fukuoka"
+            },
+            {
+              "name": "焼肉ホルモン人生 大ちゃん",
+              "lat": 33.6107258,
+              "lng": 130.4195169,
+              "category": "Yakiniku",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%E3%83%9B%E3%83%AB%E3%83%A2%E3%83%B3%E4%BA%BA%E7%94%9F%20%E5%A4%A7%E3%81%A1%E3%82%83%E3%82%93+fukuoka"
+            },
+            {
+              "name": "긴노이타",
+              "lat": 33.5854046,
+              "lng": 130.3957153,
+              "category": "Okonomiyaki",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EA%B8%B4%EB%85%B8%EC%9D%B4%ED%83%80+fukuoka"
+            },
+            {
+              "name": "Denkosekka",
+              "lat": 33.5907775,
+              "lng": 130.4106108,
+              "category": "Okonomiyaki",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Denkosekka+fukuoka"
+            },
+            {
+              "name": "텐텐테이",
+              "lat": 33.594518,
+              "lng": 130.400779,
+              "category": "Izakaya",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4+fukuoka"
+            },
+            {
+              "name": "브라우니",
+              "lat": 33.5929559,
+              "lng": 130.3968802,
+              "category": "Izakaya",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B8%8C%EB%9D%BC%EC%9A%B0%EB%8B%88+fukuoka"
+            },
+            {
+              "name": "돈토코이",
+              "lat": 33.5759358,
+              "lng": 130.3719374,
+              "category": "Izakaya",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8F%88%ED%86%A0%EC%BD%94%EC%9D%B4+fukuoka"
+            },
+            {
+              "name": "메종멘타이",
+              "lat": 33.5871908,
+              "lng": 130.4040406,
+              "category": "Izakaya",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%94%EC%A2%85%EB%A9%98%ED%83%80%EC%9D%B4+fukuoka"
+            },
+            {
+              "name": "焼き鳥うたう",
+              "lat": 33.5819531,
+              "lng": 130.3973282,
+              "category": "Izakaya",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E3%81%8D%E9%B3%A5%E3%81%86%E3%81%9F%E3%81%86+fukuoka"
+            },
+            {
+              "name": "GOOD MARKET KYUSHU",
+              "lat": 33.5897927,
+              "lng": 130.4112169,
+              "category": "Store",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GOOD%20MARKET%20KYUSHU+fukuoka"
+            },
+            {
+              "name": "한큐 하카타",
+              "lat": 33.589364,
+              "lng": 130.4198378,
+              "category": "Store",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%95%9C%ED%81%90%20%ED%95%98%EC%B9%B4%ED%83%80+fukuoka"
+            },
+            {
+              "name": "캐널시티 하카타",
+              "lat": 33.5896305,
+              "lng": 130.4109478,
+              "category": "Store",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%BA%90%EB%84%90%EC%8B%9C%ED%8B%B0%20%ED%95%98%EC%B9%B4%ED%83%80+fukuoka"
+            },
+            {
+              "name": "스미요시 슈한 (사케판매점)",
+              "lat": 33.5852847,
+              "lng": 130.4117245,
+              "category": "Store",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EB%AF%B8%EC%9A%94%EC%8B%9C%20%EC%8A%88%ED%95%9C%20%28%EC%82%AC%EC%BC%80%ED%8C%90%EB%A7%A4%EC%A0%90%29+fukuoka"
+            },
+            {
+              "name": "GU 요도바시 하카타",
+              "lat": 33.5885318,
+              "lng": 130.421391,
+              "category": "Store",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GU%20%EC%9A%94%EB%8F%84%EB%B0%94%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80+fukuoka"
+            },
+            {
+              "name": "GU Mina Tenjin",
+              "lat": 33.5929742,
+              "lng": 130.3983736,
+              "category": "Store",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GU%20Mina%20Tenjin+fukuoka"
+            },
+            {
+              "name": "몽벨",
+              "lat": 33.5878551,
+              "lng": 130.398327,
+              "category": "Store",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%AA%BD%EB%B2%A8+fukuoka"
+            },
+            {
+              "name": "Ishii Sports Yodobashi Hakata store",
+              "lat": 33.5882884,
+              "lng": 130.4215225,
+              "category": "Store",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ishii%20Sports%20Yodobashi%20Hakata%20store+fukuoka"
+            },
+            {
+              "name": "오오시게 쇼쿠도 이마이즈미점",
+              "lat": 33.5869882,
+              "lng": 130.4007159,
+              "category": "Ramen",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%98%A4%EC%98%A4%EC%8B%9C%EA%B2%8C%20%EC%87%BC%EC%BF%A0%EB%8F%84%20%EC%9D%B4%EB%A7%88%EC%9D%B4%EC%A6%88%EB%AF%B8%EC%A0%90+fukuoka"
+            },
+            {
+              "name": "라멘 신타로",
+              "lat": 33.5807612,
+              "lng": 130.409304,
+              "category": "Ramen",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%9D%BC%EB%A9%98%20%EC%8B%A0%ED%83%80%EB%A1%9C+fukuoka"
+            },
+            {
+              "name": "멘도하나모코시",
+              "lat": 33.5809807,
+              "lng": 130.3953376,
+              "category": "Ramen",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%98%EB%8F%84%ED%95%98%EB%82%98%EB%AA%A8%EC%BD%94%EC%8B%9C+fukuoka"
+            },
+            {
+              "name": "멘야잇시 라멘",
+              "lat": 33.5923001,
+              "lng": 130.4079304,
+              "category": "Ramen",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%98%EC%95%BC%EC%9E%87%EC%8B%9C%20%EB%9D%BC%EB%A9%98+fukuoka"
+            },
+            {
+              "name": "오호리 공원",
+              "lat": 33.5862065,
+              "lng": 130.3764646,
+              "category": "Attraction",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%98%A4%ED%98%B8%EB%A6%AC%20%EA%B3%B5%EC%9B%90+fukuoka"
+            },
+            {
+              "name": "스이쿄텐만구",
+              "lat": 33.5926509,
+              "lng": 130.4018375,
+              "category": "Attraction",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%9D%B4%EC%BF%84%ED%85%90%EB%A7%8C%EA%B5%AC+fukuoka"
+            },
+            {
+              "name": "우미노나카미치 해변공원",
+              "lat": 33.6642785,
+              "lng": 130.3616,
+              "category": "Attraction",
+              "description": "",
+              "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EB%AF%B8%EB%85%B8%EB%82%98%EC%B9%B4%EB%AF%B8%EC%B9%98%20%ED%95%B4%EB%B3%80%EA%B3%B5%EC%9B%90+fukuoka"
+            }
+          ],
+          "categories": {
+            "Sushi & Meal": [
+              {
+                "name": "타카미 스시",
+                "lat": 33.5846346,
+                "lng": 130.3951329,
+                "category": "Sushi & Meal",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%83%80%EC%B9%B4%EB%AF%B8%20%EC%8A%A4%EC%8B%9C+fukuoka"
+              },
+              {
+                "name": "스시사카바 사시스 하카타마잉구점",
+                "lat": 33.5906798,
+                "lng": 130.4206962,
+                "category": "Sushi & Meal",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%8B%9C%EC%82%AC%EC%B9%B4%EB%B0%94%20%EC%82%AC%EC%8B%9C%EC%8A%A4%20%ED%95%98%EC%B9%B4%ED%83%80%EB%A7%88%EC%9E%89%EA%B5%AC%EC%A0%90+fukuoka"
+              },
+              {
+                "name": "旨鮨stand O",
+                "lat": 33.5913748,
+                "lng": 130.3928677,
+                "category": "Sushi & Meal",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%97%A8%E9%AE%A8stand%20O+fukuoka"
+              },
+              {
+                "name": "우오츄",
+                "lat": 33.5854051,
+                "lng": 130.3977491,
+                "category": "Sushi & Meal",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EC%98%A4%EC%B8%84+fukuoka"
+              },
+              {
+                "name": "쇼쿠도 미츠",
+                "lat": 33.5830234,
+                "lng": 130.4083219,
+                "category": "Sushi & Meal",
+                "description": "굉장히 가고 싶음",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%87%BC%EC%BF%A0%EB%8F%84%20%EB%AF%B8%EC%B8%A0+fukuoka"
+              },
+              {
+                "name": "殊代 cotoshiro（ことしろ）",
+                "lat": 33.5880955,
+                "lng": 130.3923513,
+                "category": "Sushi & Meal",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%AE%8A%E4%BB%A3%20cotoshiro%EF%BC%88%E3%81%93%E3%81%A8%E3%81%97%E3%82%8D%EF%BC%89+fukuoka"
+              },
+              {
+                "name": "텐텐테이",
+                "lat": 33.594518,
+                "lng": 130.400779,
+                "category": "Sushi & Meal",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4+fukuoka"
+              },
+              {
+                "name": "부타 매니아동 이나다야 선",
+                "lat": 33.5829599,
+                "lng": 130.407105,
+                "category": "Sushi & Meal",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B6%80%ED%83%80%20%EB%A7%A4%EB%8B%88%EC%95%84%EB%8F%99%20%EC%9D%B4%EB%82%98%EB%8B%A4%EC%95%BC%20%EC%84%A0+fukuoka"
+              }
+            ],
+            "Cafe & Bakery": [
+              {
+                "name": "시즈솜 카페",
+                "lat": 33.5727588,
+                "lng": 130.4162288,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EC%A6%88%EC%86%9C%20%EC%B9%B4%ED%8E%98+fukuoka"
+              },
+              {
+                "name": "OYATUYA.Uの喫茶",
+                "lat": 33.581072,
+                "lng": 130.4036796,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=OYATUYA.U%E3%81%AE%E5%96%AB%E8%8C%B6+fukuoka"
+              },
+              {
+                "name": "굿 업 커피",
+                "lat": 33.5774746,
+                "lng": 130.4065069,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EA%B5%BF%20%EC%97%85%20%EC%BB%A4%ED%94%BC+fukuoka"
+              },
+              {
+                "name": "시로가네사보",
+                "lat": 33.5783366,
+                "lng": 130.4053765,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EB%A1%9C%EA%B0%80%EB%84%A4%EC%82%AC%EB%B3%B4+fukuoka"
+              },
+              {
+                "name": "APOC COFFEE",
+                "lat": 33.5885316,
+                "lng": 130.4166046,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=APOC%20COFFEE+fukuoka"
+              },
+              {
+                "name": "이시무라 만세이도 본점",
+                "lat": 33.595926,
+                "lng": 130.404348,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9D%B4%EC%8B%9C%EB%AC%B4%EB%9D%BC%20%EB%A7%8C%EC%84%B8%EC%9D%B4%EB%8F%84%20%EB%B3%B8%EC%A0%90+fukuoka"
+              },
+              {
+                "name": "TOFFEE park",
+                "lat": 33.592068,
+                "lng": 130.4043927,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=TOFFEE%20park+fukuoka"
+              },
+              {
+                "name": "칸미도코로 타키무라",
+                "lat": 33.5952019,
+                "lng": 130.4057173,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%B9%B8%EB%AF%B8%EB%8F%84%EC%BD%94%EB%A1%9C%20%ED%83%80%ED%82%A4%EB%AC%B4%EB%9D%BC+fukuoka"
+              },
+              {
+                "name": "파크 사우스 샌드위치 후쿠오카",
+                "lat": 33.58961,
+                "lng": 130.3947959,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%8C%8C%ED%81%AC%20%EC%82%AC%EC%9A%B0%EC%8A%A4%20%EC%83%8C%EB%93%9C%EC%9C%84%EC%B9%98%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4+fukuoka"
+              },
+              {
+                "name": "Henri Charpentier",
+                "lat": 33.5896847,
+                "lng": 130.4200838,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Henri%20Charpentier+fukuoka"
+              },
+              {
+                "name": "다코멧카",
+                "lat": 33.5874397,
+                "lng": 130.4193439,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8B%A4%EC%BD%94%EB%A9%A7%EC%B9%B4+fukuoka"
+              },
+              {
+                "name": "빵 스톡 텐진점",
+                "lat": 33.5916517,
+                "lng": 130.4040419,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B9%B5%20%EC%8A%A4%ED%86%A1%20%ED%85%90%EC%A7%84%EC%A0%90+fukuoka"
+              },
+              {
+                "name": "The CRAFT Bar and Grill",
+                "lat": 33.5894461,
+                "lng": 130.3949854,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20CRAFT%20Bar%20and%20Grill+fukuoka"
+              },
+              {
+                "name": "375 cafe & bar",
+                "lat": 33.5766502,
+                "lng": 130.4040751,
+                "category": "Cafe & Bakery",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=375%20cafe%20%26%20bar+fukuoka"
+              }
+            ],
+            "Base": [
+              {
+                "name": "리치몬드 호텔 텐진 니시도리",
+                "lat": 33.5893232,
+                "lng": 130.3965747,
+                "category": "Base",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A6%AC%EC%B9%98%EB%AA%AC%EB%93%9C%20%ED%98%B8%ED%85%94%20%ED%85%90%EC%A7%84%20%EB%8B%88%EC%8B%9C%EB%8F%84%EB%A6%AC+fukuoka"
+              }
+            ],
+            "Hamburg": [
+              {
+                "name": "히키니쿠토코메 이마이즈미",
+                "lat": 33.5836059,
+                "lng": 130.3991432,
+                "category": "Hamburg",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%9E%88%ED%82%A4%EB%8B%88%EC%BF%A0%ED%86%A0%EC%BD%94%EB%A9%94%20%EC%9D%B4%EB%A7%88%EC%9D%B4%EC%A6%88%EB%AF%B8+fukuoka"
+              },
+              {
+                "name": "Messi",
+                "lat": 33.654869,
+                "lng": 130.4459639,
+                "category": "Hamburg",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Messi+fukuoka"
+              },
+              {
+                "name": "Tomatobatake",
+                "lat": 33.594681,
+                "lng": 130.399314,
+                "category": "Hamburg",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Tomatobatake+fukuoka"
+              },
+              {
+                "name": "쟈포네",
+                "lat": 33.5978899,
+                "lng": 130.4028281,
+                "category": "Hamburg",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9F%88%ED%8F%AC%EB%84%A4+fukuoka"
+              },
+              {
+                "name": "비스트로 오",
+                "lat": 33.5918312,
+                "lng": 130.3939625,
+                "category": "Hamburg",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B9%84%EC%8A%A4%ED%8A%B8%EB%A1%9C%20%EC%98%A4+fukuoka"
+              },
+              {
+                "name": "키와미야 하카타역 지하가점",
+                "lat": 33.5909166,
+                "lng": 130.4193234,
+                "category": "Hamburg",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%AD%20%EC%A7%80%ED%95%98%EA%B0%80%EC%A0%90+fukuoka"
+              }
+            ],
+            "Yakiniku": [
+              {
+                "name": "시치린 야키니쿠 유키",
+                "lat": 33.5933937,
+                "lng": 130.4046507,
+                "category": "Yakiniku",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8B%9C%EC%B9%98%EB%A6%B0%20%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%EC%9C%A0%ED%82%A4+fukuoka"
+              },
+              {
+                "name": "焼肉 溜 Tamari",
+                "lat": 33.587413,
+                "lng": 130.394047,
+                "category": "Yakiniku",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%20%E6%BA%9C%20Tamari+fukuoka"
+              },
+              {
+                "name": "야키니쿠 하나비 2호점",
+                "lat": 33.5892691,
+                "lng": 130.4044363,
+                "category": "Yakiniku",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%95%98%EB%82%98%EB%B9%84%202%ED%98%B8%EC%A0%90+fukuoka"
+              },
+              {
+                "name": "야키니쿠 키와미야 다이묘점",
+                "lat": 33.5869122,
+                "lng": 130.3949032,
+                "category": "Yakiniku",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%EB%8B%A4%EC%9D%B4%EB%AC%98%EC%A0%90+fukuoka"
+              },
+              {
+                "name": "야키니쿠 타규 하카타에키미나미점",
+                "lat": 33.5856452,
+                "lng": 130.4237455,
+                "category": "Yakiniku",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%BC%ED%82%A4%EB%8B%88%EC%BF%A0%20%ED%83%80%EA%B7%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%90%ED%82%A4%EB%AF%B8%EB%82%98%EB%AF%B8%EC%A0%90+fukuoka"
+              },
+              {
+                "name": "焼肉ホルモン人生 大ちゃん",
+                "lat": 33.6107258,
+                "lng": 130.4195169,
+                "category": "Yakiniku",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%E3%83%9B%E3%83%AB%E3%83%A2%E3%83%B3%E4%BA%BA%E7%94%9F%20%E5%A4%A7%E3%81%A1%E3%82%83%E3%82%93+fukuoka"
+              }
+            ],
+            "Okonomiyaki": [
+              {
+                "name": "긴노이타",
+                "lat": 33.5854046,
+                "lng": 130.3957153,
+                "category": "Okonomiyaki",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EA%B8%B4%EB%85%B8%EC%9D%B4%ED%83%80+fukuoka"
+              },
+              {
+                "name": "Denkosekka",
+                "lat": 33.5907775,
+                "lng": 130.4106108,
+                "category": "Okonomiyaki",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Denkosekka+fukuoka"
+              }
+            ],
+            "Izakaya": [
+              {
+                "name": "텐텐테이",
+                "lat": 33.594518,
+                "lng": 130.400779,
+                "category": "Izakaya",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4+fukuoka"
+              },
+              {
+                "name": "브라우니",
+                "lat": 33.5929559,
+                "lng": 130.3968802,
+                "category": "Izakaya",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B8%8C%EB%9D%BC%EC%9A%B0%EB%8B%88+fukuoka"
+              },
+              {
+                "name": "돈토코이",
+                "lat": 33.5759358,
+                "lng": 130.3719374,
+                "category": "Izakaya",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8F%88%ED%86%A0%EC%BD%94%EC%9D%B4+fukuoka"
+              },
+              {
+                "name": "메종멘타이",
+                "lat": 33.5871908,
+                "lng": 130.4040406,
+                "category": "Izakaya",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%94%EC%A2%85%EB%A9%98%ED%83%80%EC%9D%B4+fukuoka"
+              },
+              {
+                "name": "焼き鳥うたう",
+                "lat": 33.5819531,
+                "lng": 130.3973282,
+                "category": "Izakaya",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E3%81%8D%E9%B3%A5%E3%81%86%E3%81%9F%E3%81%86+fukuoka"
+              }
+            ],
+            "Store": [
+              {
+                "name": "GOOD MARKET KYUSHU",
+                "lat": 33.5897927,
+                "lng": 130.4112169,
+                "category": "Store",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GOOD%20MARKET%20KYUSHU+fukuoka"
+              },
+              {
+                "name": "한큐 하카타",
+                "lat": 33.589364,
+                "lng": 130.4198378,
+                "category": "Store",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%95%9C%ED%81%90%20%ED%95%98%EC%B9%B4%ED%83%80+fukuoka"
+              },
+              {
+                "name": "캐널시티 하카타",
+                "lat": 33.5896305,
+                "lng": 130.4109478,
+                "category": "Store",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%BA%90%EB%84%90%EC%8B%9C%ED%8B%B0%20%ED%95%98%EC%B9%B4%ED%83%80+fukuoka"
+              },
+              {
+                "name": "스미요시 슈한 (사케판매점)",
+                "lat": 33.5852847,
+                "lng": 130.4117245,
+                "category": "Store",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EB%AF%B8%EC%9A%94%EC%8B%9C%20%EC%8A%88%ED%95%9C%20%28%EC%82%AC%EC%BC%80%ED%8C%90%EB%A7%A4%EC%A0%90%29+fukuoka"
+              },
+              {
+                "name": "GU 요도바시 하카타",
+                "lat": 33.5885318,
+                "lng": 130.421391,
+                "category": "Store",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GU%20%EC%9A%94%EB%8F%84%EB%B0%94%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80+fukuoka"
+              },
+              {
+                "name": "GU Mina Tenjin",
+                "lat": 33.5929742,
+                "lng": 130.3983736,
+                "category": "Store",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GU%20Mina%20Tenjin+fukuoka"
+              },
+              {
+                "name": "몽벨",
+                "lat": 33.5878551,
+                "lng": 130.398327,
+                "category": "Store",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%AA%BD%EB%B2%A8+fukuoka"
+              },
+              {
+                "name": "Ishii Sports Yodobashi Hakata store",
+                "lat": 33.5882884,
+                "lng": 130.4215225,
+                "category": "Store",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ishii%20Sports%20Yodobashi%20Hakata%20store+fukuoka"
+              }
+            ],
+            "Ramen": [
+              {
+                "name": "오오시게 쇼쿠도 이마이즈미점",
+                "lat": 33.5869882,
+                "lng": 130.4007159,
+                "category": "Ramen",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%98%A4%EC%98%A4%EC%8B%9C%EA%B2%8C%20%EC%87%BC%EC%BF%A0%EB%8F%84%20%EC%9D%B4%EB%A7%88%EC%9D%B4%EC%A6%88%EB%AF%B8%EC%A0%90+fukuoka"
+              },
+              {
+                "name": "라멘 신타로",
+                "lat": 33.5807612,
+                "lng": 130.409304,
+                "category": "Ramen",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%9D%BC%EB%A9%98%20%EC%8B%A0%ED%83%80%EB%A1%9C+fukuoka"
+              },
+              {
+                "name": "멘도하나모코시",
+                "lat": 33.5809807,
+                "lng": 130.3953376,
+                "category": "Ramen",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%98%EB%8F%84%ED%95%98%EB%82%98%EB%AA%A8%EC%BD%94%EC%8B%9C+fukuoka"
+              },
+              {
+                "name": "멘야잇시 라멘",
+                "lat": 33.5923001,
+                "lng": 130.4079304,
+                "category": "Ramen",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%98%EC%95%BC%EC%9E%87%EC%8B%9C%20%EB%9D%BC%EB%A9%98+fukuoka"
+              }
+            ],
+            "Attraction": [
+              {
+                "name": "오호리 공원",
+                "lat": 33.5862065,
+                "lng": 130.3764646,
+                "category": "Attraction",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%98%A4%ED%98%B8%EB%A6%AC%20%EA%B3%B5%EC%9B%90+fukuoka"
+              },
+              {
+                "name": "스이쿄텐만구",
+                "lat": 33.5926509,
+                "lng": 130.4018375,
+                "category": "Attraction",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%9D%B4%EC%BF%84%ED%85%90%EB%A7%8C%EA%B5%AC+fukuoka"
+              },
+              {
+                "name": "우미노나카미치 해변공원",
+                "lat": 33.6642785,
+                "lng": 130.3616,
+                "category": "Attraction",
+                "description": "",
+                "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EB%AF%B8%EB%85%B8%EB%82%98%EC%B9%B4%EB%AF%B8%EC%B9%98%20%ED%95%B4%EB%B3%80%EA%B3%B5%EC%9B%90+fukuoka"
+              }
+            ]
+          },
+          "metadata": {
+            "total_places": 57,
+            "total_categories": 10,
+            "source": "Google My Maps KML Export",
+            "generated": "2026-04-21T09:30:34.664896"
+          }
+        };
+
+
+
+        const phrasesData = [
+            { japanese: 'こんにちは', romaji: 'Konnichiwa', korean: '안녕하세요', category: 'greeting' },
+            { japanese: 'ありがとうございます', romaji: 'Arigatou gozaimasu', korean: '감사합니다', category: 'greeting' },
+            { japanese: 'すみません', romaji: 'Sumimasen', korean: '죄송합니다 / 저기요', category: 'greeting' },
+            { japanese: 'これをください', romaji: 'Kore wo kudasai', korean: '이것을 주세요', category: 'order' },
+            { japanese: 'おすすめは何ですか', romaji: 'Osusume wa nan desu ka', korean: '추천 메뉴는 무엇인가요', category: 'order' },
+            { japanese: 'いくらですか', romaji: 'Ikura desu ka', korean: '얼마입니까', category: 'payment' },
+            { japanese: 'お会計お願いします', romaji: 'Okaikei onegai shimasu', korean: '계산 부탁합니다', category: 'payment' },
+            { japanese: 'トイレはどこですか', romaji: 'Toire wa doko desu ka', korean: '화장실은 어디입니까', category: 'question' },
+            { japanese: '英語できますか', romaji: 'Eigo dekimasu ka', korean: '영어 가능하신가요', category: 'question' },
+            { japanese: 'ごちそうさまでした', romaji: 'Gochisousama deshita', korean: '잘 먹었습니다', category: 'greeting' }
+        ];
+
+        // Load phrases
+        function loadPhrases(filter = 'all', search = '') {
+            const grid = document.getElementById('phrasesGrid');
+            const filtered = phrasesData.filter(p => {
+                const matchesFilter = filter === 'all' || p.category === filter;
+                const matchesSearch = search === '' ||
+                    p.japanese.includes(search) ||
+                    p.romaji.toLowerCase().includes(search.toLowerCase()) ||
+                    p.korean.includes(search);
+                return matchesFilter && matchesSearch;
+            });
+
+            grid.innerHTML = filtered.map((p, i) => `
+                <div class="phrase-item ${p.category}">
+                    <div class="phrase-text">
+                        <div class="japanese-text">${p.japanese}</div>
+                        <div class="romaji">${p.romaji}</div>
+                        <div class="korean">${p.korean}</div>
+                    </div>
+                    <div class="phrase-actions">
+                        <button class="phrase-btn favorite" onclick="toggleFavorite(this)">♥</button>
+                        <button class="phrase-btn" onclick="copyPhrase('${p.japanese}')">Copy</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                loadPhrases(btn.dataset.filter, document.getElementById('phraseSearch').value);
+            });
+        });
+
+        // Search
+        document.getElementById('phraseSearch').addEventListener('input', (e) => {
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            loadPhrases(activeFilter, e.target.value);
+        });
+
+        // Toggle favorite
+        function toggleFavorite(btn) {
+            btn.classList.toggle('active');
+        }
+
+        // Copy phrase
+        function copyPhrase(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('클립보드에 복사되었습니다!');
+            });
+        }
+
+        // AI Generator with KML-based Search
+        function generateRecommendations() {
+            const input = document.getElementById('aiInput').value.toLowerCase();
+            const output = document.getElementById('aiOutput');
+            const recommendations = document.getElementById('aiRecommendations');
+            const resultsCount = document.getElementById('resultsCount');
+
+            if (!input) {
+                alert('키워드를 입력해주세요');
+                return;
+            }
+
+            if (typeof FUKUOKA_PLACES_DATA === 'undefined') {
+                alert('장소 데이터를 로드할 수 없습니다. 페이지를 새로고침 해주세요.');
+                return;
+            }
+
+            // 간단한 검색 (이름 또는 카테고리 매칭)
+            const found = FUKUOKA_PLACES_DATA.places.filter(place =>
+                place.name.toLowerCase().includes(input) ||
+                place.category.toLowerCase().includes(input)
+            );
+
+            if (found.length === 0) {
+                recommendations.innerHTML = `
+                    <div class="ai-no-results">
+                        <strong>"${input}"</strong>에 대한 검색 결과가 없습니다.<br>
+                        카테고리명을 정확히 입력하세요: Ramen, Cafe, Sushi, Yakiniku, Hamburg, Izakaya, Okonomiyaki, Store, Attraction
+                    </div>
+                `;
+                resultsCount.textContent = '';
+            } else {
+                resultsCount.textContent = `${found.length}개의 장소를 찾았습니다`;
+
+                recommendations.innerHTML = found.map(place => `
+                    <div class="ai-rec-card">
+                        <div class="ai-rec-header">
+                            <div>
+                                <div class="ai-rec-title">${place.name}</div>
+                                <span class="ai-rec-category">${place.category}</span>
+                            </div>
+                        </div>
+                        ${place.description ? `
+                            <div class="ai-rec-description">${place.description}</div>
+                        ` : ''}
+                        <div class="ai-rec-actions">
+                            <a href="${place.googleMapsUrl}"
+                               target="_blank"
+                               class="ai-map-btn">
+                                📍 Google Maps에서 보기
+                            </a>
+                            <button class="ai-copy-coords"
+                                    onclick="copyCoordinates(${place.lat}, ${place.lng}, '${place.name.replace(/'/g, "\\'")}')">
+                                좌표 복사
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            output.classList.add('active');
+            output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Copy coordinates to clipboard
+        function copyCoordinates(lat, lng, name) {
+            const coords = `${lat}, ${lng}`;
+            navigator.clipboard.writeText(coords).then(() => {
+                alert(`"${name}"의 좌표가 복사되었습니다:\n${coords}`);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                alert('좌표 복사에 실패했습니다.');
+            });
+        }
+
+        // Initialize places data
+        function initializePlacesData() {
+            if (typeof FUKUOKA_PLACES_DATA !== 'undefined') {
+                const countEl = document.getElementById('totalPlacesCount');
+                if (countEl) {
+                    countEl.textContent = FUKUOKA_PLACES_DATA.metadata.total_places;
+                }
+                console.log(`✓ Loaded ${FUKUOKA_PLACES_DATA.metadata.total_places} places from KML`);
+            }
+        }
+
+        // Navigation
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Initialize
+        loadWeather();
+        loadWeatherChart();
+        loadPhrases();
+        initializePlacesData();
+    </script>
+
+</body>
+</html>
