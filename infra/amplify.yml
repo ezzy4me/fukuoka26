@@ -17,7 +17,7 @@ frontend:
         - ls -la public/
         - echo "Deployment ready"
   artifacts:
-    baseDirectory: /public
+    baseDirectory: public
     files:
       - '**/*'
   cache:
