@@ -14,9 +14,11 @@
         body {
             background-color: #FED0BC;
             width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            min-height: calc(100vh + 100px);
+            overflow-y: auto;
+            overflow-x: hidden;
             position: relative;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Central Graphic */
@@ -63,7 +65,7 @@
             transform: translateX(-50%);
             font-family: 'Courier New', 'Courier', monospace;
             font-weight: 400;
-            font-size: 56px;
+            font-size: 48px;
             letter-spacing: 0.15em;
             color: #3533a3;
             z-index: 10;
@@ -71,9 +73,9 @@
 
         /* Dates - Bottom Left */
         .dates {
-            position: absolute;
+            position: fixed;
             left: 5%;
-            bottom: 8%;
+            bottom: 16%;
             z-index: 10;
             font-family: Impact, 'Arial Black', sans-serif;
             font-weight: 900;
@@ -86,20 +88,42 @@
         .japanese-text {
             position: absolute;
             left: 50%;
-            bottom: 4%;
+            bottom: 14%;
             transform: translateX(-50%);
             font-family: "游明朝", "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif;
             font-size: clamp(18px, 2.5vw, 24px);
             font-weight: 400;
             color: #000;
             z-index: 10;
+            white-space: nowrap;
+        }
+
+        /* Names Vertical - Top Right */
+        .names-vertical {
+            position: absolute;
+            right: 5%;
+            top: 14%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-family: 'Courier New', monospace;
+            font-weight: 300;
+            color: #3533a3;
+        }
+
+        .names-vertical div {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 16px;
+            letter-spacing: 0.05em;
         }
 
         /* Place Info - Bottom Right */
         .place-info {
-            position: absolute;
+            position: fixed;
             right: 5%;
-            bottom: 12%;
+            bottom: 20%;
             z-index: 10;
             text-align: right;
         }
@@ -154,24 +178,33 @@
             }
 
             .hashtag {
-                font-size: 42px;
+                font-size: 34px;
                 top: 5%;
+            }
+
+            .names-vertical {
+                right: 3%;
+                top: 12%;
+            }
+
+            .names-vertical div {
+                font-size: 14px;
             }
 
             .dates {
                 font-size: 50px;
                 left: 3%;
-                bottom: 6%;
+                bottom: 14%;
             }
 
             .japanese-text {
                 font-size: 16px;
-                bottom: 3%;
+                bottom: 13%;
             }
 
             .place-info {
                 right: 3%;
-                bottom: 10%;
+                bottom: 18%;
             }
 
             .place-label {
@@ -187,12 +220,69 @@
                 font-size: 12px;
             }
         }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .central-graphic {
+                height: 40vh;
+            }
+
+            .nav-menu {
+                left: 2%;
+                top: 11%;
+            }
+
+            .nav-menu a {
+                font-size: 16px;
+            }
+
+            .hashtag {
+                font-size: 32px;
+            }
+
+            .names-vertical {
+                top: 11%;
+            }
+
+            .names-vertical div {
+                font-size: 12px;
+            }
+
+            .dates {
+                font-size: 44px;
+                left: 2%;
+                bottom: 13%;
+            }
+
+            .japanese-text {
+                font-size: 14px;
+                bottom: 12%;
+            }
+
+            .place-info {
+                right: 2%;
+                bottom: 17%;
+            }
+        }
+
+        /* Extra Small Screens (iPhone SE) */
+        @media (max-width: 375px) {
+            .japanese-text {
+                font-size: 13px;
+                letter-spacing: -0.02em;
+                bottom: 12%;
+            }
+
+            .names-vertical div {
+                font-size: 11px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <!-- Central Graphic -->
-    <img src="images/Gemini_Generated_Image_he9g47he9g47he9g.png" class="central-graphic" alt="Fukuoka Skyline">
+    <img src="images/fukuoka-skyline.png" class="central-graphic" alt="Fukuoka Skyline">
 
     <!-- Navigation Menu - Top Left -->
     <nav class="nav-menu">
@@ -204,6 +294,12 @@
 
     <!-- Hashtag - Center Top -->
     <div class="hashtag">#fukuoka</div>
+
+    <!-- Names - Top Right (Vertical) -->
+    <div class="names-vertical">
+        <div>sangmin</div>
+        <div>yunnyoung</div>
+    </div>
 
     <!-- Dates - Bottom Left -->
     <div class="dates">

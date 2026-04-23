@@ -20,8 +20,12 @@
 
         /* Header */
         header {
-            text-align: center;
+            text-align: left;
             margin-bottom: 60px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 20px;
         }
 
         header h1 {
@@ -57,7 +61,7 @@
             text-transform: uppercase;
             color: #FFF;
             background: #000;
-            padding: 20px 30px;
+            padding: 8px 20px;
             margin-bottom: 30px;
             display: inline-block;
             letter-spacing: 0.08em;
@@ -67,15 +71,28 @@
         .info-card {
             background: rgba(255, 255, 255, 0.7);
             border: 3px solid #000;
-            padding: 30px;
+            padding: 10px 15px;
             margin-bottom: 60px;
+        }
+
+        .info-card a {
+            color: #3533a3;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px solid #3533a3;
+            transition: all 0.2s;
+        }
+
+        .info-card a:hover {
+            color: #000;
+            border-bottom-color: #000;
         }
 
         .info-card p {
             font-size: 14px;
-            line-height: 1.8;
+            line-height: 1.6;
             color: #000;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .info-card p:last-child {
@@ -90,12 +107,12 @@
         .chart-wrapper {
             background: rgba(255, 255, 255, 0.7);
             border: 3px solid #000;
-            padding: 30px;
+            padding: 12px 15px;
             margin-bottom: 60px;
         }
 
         .chart-wrapper canvas {
-            max-height: 300px;
+            max-height: 400px;
         }
 
         /* Search Box */
@@ -270,28 +287,6 @@
             display: none;
         }
 
-        /* Back Link */
-        .back-link {
-            display: inline-block;
-            margin-bottom: 40px;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.7);
-            color: #000;
-            font-size: 14px;
-            font-weight: bold;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 2px solid #000;
-            transition: all 0.3s ease;
-        }
-
-        .back-link:hover {
-            background: #000;
-            color: #FFF;
-            transform: translateX(-4px);
-        }
-
         /* Footer */
         footer {
             background: #000;
@@ -318,6 +313,10 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            header {
+                padding-left: 20px;
+            }
+
             header h1 {
                 font-size: 32px;
             }
@@ -327,8 +326,19 @@
                 letter-spacing: 1px;
             }
 
+            .nav-menu {
+                left: 3%;
+                top: 3%;
+                gap: 6px;
+            }
+
+            .nav-menu a {
+                font-size: 14px;
+                padding: 3px 6px;
+            }
+
             .chart-wrapper {
-                padding: 20px 15px;
+                padding: 15px;
                 margin-bottom: 40px;
             }
 
@@ -353,9 +363,143 @@
                 padding: 8px 15px;
             }
         }
+
+        /* Hamburger Menu Toggle Button */
+        .menu-toggle {
+            position: fixed;
+            right: 5%;
+            top: 5%;
+            z-index: 200;
+            background: none;
+            border: none;
+            color: #3533a3;
+            font-size: 60px;
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .menu-toggle:hover {
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        /* Menu Overlay */
+        .nav-menu-overlay {
+            position: fixed;
+            right: -300px;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: none;
+            border: none;
+            z-index: 150;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 30px 30px 30px;
+            gap: 15px;
+            transition: right 0.4s ease;
+        }
+
+        .nav-menu-overlay.open {
+            right: 0;
+        }
+
+        .nav-menu-overlay a {
+            font-family: 'Arial Black', sans-serif;
+            font-weight: 900;
+            font-size: 18px;
+            text-transform: uppercase;
+            color: #000;
+            text-decoration: none;
+            padding: 8px 0;
+            border: none;
+            background: none;
+            transition: all 0.3s;
+        }
+
+        .nav-menu-overlay a:hover {
+            color: #3533a3;
+        }
+
+        .nav-menu-overlay a.active {
+            color: #3533a3;
+        }
+
+        /* Background Image */
+        .background-graphic {
+            position: absolute;
+            right: 5%;
+            top: 10%;
+            width: 200px;
+            height: auto;
+            z-index: 1;
+            opacity: 0.4;
+            mix-blend-mode: multiply;
+            transition: transform 0.1s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                right: 3%;
+                top: 3%;
+                font-size: 50px;
+            }
+
+            .nav-menu-overlay {
+                width: 220px;
+            }
+
+            .nav-menu-overlay a {
+                font-size: 16px;
+            }
+
+            .background-graphic {
+                right: 3%;
+                top: 8%;
+                width: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-toggle {
+                font-size: 45px;
+            }
+
+            .nav-menu-overlay {
+                width: 200px;
+            }
+
+            .nav-menu-overlay a {
+                font-size: 14px;
+            }
+
+            .background-graphic {
+                width: 100px;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- Background Image -->
+    <img src="images/infukuoka.png" class="background-graphic" alt="Background" loading="lazy">
+
+    <!-- Hamburger Menu Toggle Button -->
+    <button class="menu-toggle" onclick="toggleMenu()">−</button>
+
+    <!-- Menu Overlay -->
+    <nav class="nav-menu-overlay" id="navMenu">
+        <a href="index.html">MAIN</a>
+        <a href="history.html">HISTORY</a>
+        <a href="in-fukuoka.html" class="active">IN FUKUOKA</a>
+        <a href="checklist.html">CHECKLIST</a>
+        <a href="emergency.html">EMERGENCY</a>
+    </nav>
 
     <!-- Header -->
     <header>
@@ -369,9 +513,9 @@
         <section>
             <h2 class="section-title">FLIGHTS</h2>
             <div class="info-card">
-                <p><strong>ICN → FUK:</strong> 2026.04.27, 09:30</p>
-                <p><strong>FUK → ICN:</strong> 2026.04.29, 18:45</p>
-                <p><strong>Airline:</strong> Korean Air</p>
+                <p><strong>ICN → FUK:</strong> <a href="https://share.google/NYQEoM5Hjm10nGDZy" target="_blank" rel="noopener">TW201</a>, 2026.04.27 09:30</p>
+                <p><strong>FUK → ICN:</strong> <a href="https://share.google/OGFoCczdehtpZL6Ft" target="_blank" rel="noopener">TW202</a>, 2026.04.29 18:45</p>
+                <p><strong>Airline:</strong> T'way Air</p>
             </div>
         </section>
 
@@ -385,7 +529,7 @@
 
         <!-- Section 3: Must-Visit Places -->
         <section>
-            <h2 class="section-title">MUST-VISIT PLACES</h2>
+            <h2 class="section-title">100 PLACES</h2>
 
             <!-- Search Box -->
             <div class="search-box">
@@ -437,14 +581,12 @@
             <div id="phrasesList"></div>
         </section>
 
-        <a href="index.html" class="back-link">← BACK TO MAIN</a>
-
     </div>
 
     <!-- Footer -->
     <footer>
         <p>Fukuoka Field Guide — Spring 2026</p>
-        <p><a href="index.html">메인으로 돌아가기</a> | <a href="history.html">역사</a> | <a href="checklist.html">체크리스트</a> | <a href="emergency.html">긴급</a></p>
+        <p><a href="index.html">Main</a> | <a href="history.html">역사</a> | <a href="checklist.html">체크리스트</a> | <a href="emergency.html">긴급</a></p>
     </footer>
 
     <!-- Chart.js -->
@@ -842,6 +984,48 @@
                         ? 'SHOW PLACES'
                         : 'HIDE PLACES';
                 });
+            }
+        });
+    </script>
+
+    <script>
+        // ============================================================
+        // HAMBURGER MENU TOGGLE
+        // ============================================================
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('open');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('navMenu');
+            const toggle = document.querySelector('.menu-toggle');
+
+            if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+                menu.classList.remove('open');
+            }
+        });
+
+        // ============================================================
+        // PARALLAX EFFECT FOR BACKGROUND IMAGE
+        // ============================================================
+        const backgroundGraphic = document.querySelector('.background-graphic');
+        let ticking = false;
+
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    const scrolled = window.pageYOffset;
+                    const parallaxSpeed = 0.5;
+
+                    if (backgroundGraphic) {
+                        backgroundGraphic.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
+                    }
+
+                    ticking = false;
+                });
+                ticking = true;
             }
         });
     </script>
