@@ -217,3 +217,152 @@ aws amplify delete-app --app-id [APP_ID]
 - Claude Code Best Practices: https://code.claude.com/docs/ko/best-practices
 - AWS Amplify Docs: https://docs.aws.amazon.com/amplify/
 - AWS CLI Reference: https://awscli.amazonaws.com/v2/documentation/api/latest/index.html
+
+---
+
+## 콘텐츠 재배포 워크플로우
+
+인프라가 이미 배포되어 있고, frontagent에서 HTML 콘텐츠를 수정한 후 재배포하는 경우입니다.
+
+### 배경
+
+frontagent 프로젝트에서 HTML 콘텐츠를 수정한 후, 이를 AWS Amplify에 재배포하는 과정입니다.
+
+### 전제 조건
+
+- frontagent/output 디렉토리에 최신 HTML 존재
+- AWS Amplify 앱이 이미 배포되어 있음
+- GitHub 저장소 연결됨
+
+### 단계별 실행
+
+#### 1. 콘텐츠 동기화
+
+```bash
+cd /Users/sangmin/Desktop/Claude/Projects/frontdeploy
+./scripts/sync-from-frontagent.sh
+```
+
+**자동 처리 내용**:
+- frontagent/output → frontdeploy/public 파일 복사
+- frontagent/Ref 이미지 → public/images/ 복사
+- HTML에서 `../Ref/` → `/images/` 경로 자동 수정
+- 백업 파일(.bak, .backup) 제외
+
+**예상 출력**:
+```
+Syncing content from frontagent/output to public/...
+✓ Images copied to public/images/
+✓ Image paths fixed (../Ref/ → /images/)
+Verifying copied images:
+- checklist.png
+- emergency.png
+- history.png
+- infukuoka.png
+Sync completed!
+```
+
+#### 2. 변경사항 확인
+
+```bash
+git status
+git diff public/
+```
+
+변경된 HTML 파일과 이미지 파일을 확인합니다.
+
+#### 3. Git Commit & Push
+
+```bash
+git add public/
+git commit -m "Update homepage content from frontagent"
+git push origin main
+```
+
+**Amplify 자동 동작**:
+- GitHub webhook → Amplify 빌드 트리거
+- amplify.yml 설정에 따라 빌드 (5-10분)
+- CloudFront 캐시 무효화
+- 새 버전 배포
+
+#### 4. 배포 확인
+
+**Amplify 콘솔**:
+```bash
+open "https://console.aws.amazon.com/amplify/home?region=us-east-1"
+```
+
+**사이트 확인**:
+- https://fukuoka26.com
+- https://fukuoka26.com/checklist.html
+- https://fukuoka26.com/history.html
+- https://fukuoka26.com/in-fukuoka.html
+
+각 페이지에서 배경 이미지가 정상적으로 표시되는지 확인합니다.
+
+#### 5. 테스트 스크립트 실행 (선택)
+
+```bash
+./scripts/test-deployment.sh
+```
+
+HTTPS 리다이렉트, SSL 인증서, S3 이미지 로딩 등을 자동으로 검증합니다.
+
+---
+
+### 빠른 실행 (스킬 사용)
+
+위 모든 단계를 자동으로 실행하려면:
+
+```
+/deploy
+```
+
+또는
+
+```
+"홈페이지 재배포"
+```
+
+스킬이 자동으로 sync → git add → commit → push를 실행합니다.
+
+---
+
+### 문제 해결
+
+#### 이미지가 로딩되지 않는 경우
+
+```bash
+# public/images/ 디렉토리 확인
+ls -la public/images/
+
+# HTML 경로 확인 (../Ref/가 있으면 안 됨)
+grep -r "../Ref/" public/*.html
+
+# 경로가 잘못되었다면 다시 sync
+./scripts/sync-from-frontagent.sh
+```
+
+#### Git push 실패
+
+```bash
+# 원격 저장소 확인
+git remote -v
+
+# SSH 키 또는 Personal Access Token 재설정
+```
+
+#### Amplify 빌드 실패
+
+1. Amplify 콘솔에서 빌드 로그 확인
+2. public/ 디렉토리가 비어있지 않은지 확인
+3. amplify.yml 설정 확인
+
+---
+
+### 주의사항
+
+- **백업 파일은 Git에 커밋하지 마세요**: .bak, .backup, .bak2 파일들
+- **sync 전에 frontagent에서 콘텐츠 최종 확인**: 한 번 push하면 즉시 배포됨
+- **CloudFront 캐시**: 변경사항이 즉시 반영 안 될 수 있음 (최대 24시간, 보통 10분)
+
