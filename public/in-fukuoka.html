@@ -107,12 +107,12 @@
         .chart-wrapper {
             background: rgba(255, 255, 255, 0.7);
             border: 3px solid #000;
-            padding: 12px 15px;
+            padding: 15px;
             margin-bottom: 60px;
         }
 
         .chart-wrapper canvas {
-            max-height: 400px;
+            max-height: 450px;
         }
 
         /* Search Box */
@@ -195,6 +195,45 @@
         .phrase-korean {
             font-size: 14px;
             color: #000;
+        }
+
+        /* Number Table */
+        .number-table-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 3px solid #000;
+            padding: 20px;
+            grid-column: 1 / -1;
+        }
+
+        .number-table-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .number-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .number-table td {
+            padding: 8px 12px;
+            border: 2px solid #000;
+            font-size: 14px;
+            color: #000;
+            text-align: center;
+        }
+
+        .number-table td:first-child {
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .number-table td:empty {
+            border: none;
+            background: none;
         }
 
         /* Places List */
@@ -339,12 +378,12 @@
             }
 
             .chart-wrapper {
-                padding: 15px;
+                padding: 12px;
                 margin-bottom: 40px;
             }
 
             .chart-wrapper canvas {
-                max-height: 250px;
+                max-height: 300px;
             }
 
             #phrasesList {
@@ -362,6 +401,19 @@
             .filter-btn, .category-btn {
                 font-size: 10px;
                 padding: 8px 15px;
+            }
+
+            .number-table-card {
+                padding: 15px;
+            }
+
+            .number-table-title {
+                font-size: 14px;
+            }
+
+            .number-table td {
+                padding: 6px 8px;
+                font-size: 11px;
             }
         }
 
@@ -488,7 +540,7 @@
 <body>
 
     <!-- Background Image -->
-    <img src="images/infukuoka.png" class="background-graphic" alt="Background" loading="lazy">
+    <img src="../Ref/infukuoka.png" class="background-graphic" alt="Background" loading="lazy">
 
     <!-- Hamburger Menu Toggle Button -->
     <button class="menu-toggle" onclick="toggleMenu()">−</button>
@@ -514,9 +566,8 @@
         <section>
             <h2 class="section-title">FLIGHTS</h2>
             <div class="info-card">
-                <p><strong>ICN → FUK:</strong> <a href="https://share.google/NYQEoM5Hjm10nGDZy" target="_blank" rel="noopener">TW201</a>, 2026.04.27 09:30</p>
-                <p><strong>FUK → ICN:</strong> <a href="https://share.google/OGFoCczdehtpZL6Ft" target="_blank" rel="noopener">TW202</a>, 2026.04.29 18:45</p>
-                <p><strong>Airline:</strong> T'way Air</p>
+                <p><strong>ICN → FUK:</strong> 티웨이항공 <a href="https://share.google/NYQEoM5Hjm10nGDZy" target="_blank" rel="noopener">TW201</a><br>26.04.27 10:05-11:30</p>
+                <p><strong>FUK → ICN:</strong> 티웨이항공 <a href="https://share.google/SoMHgctxwQSs3BGuo" target="_blank" rel="noopener">TW206</a><br>26.04.29 17:30-18:55</p>
             </div>
         </section>
 
@@ -554,15 +605,15 @@
             <div id="placesCount" style="margin-bottom: 20px; font-size: 14px; color: #000; opacity: 0.7;"></div>
 
             <!-- Toggle Button -->
-            <button id="placesToggleBtn" class="places-toggle-btn">HIDE PLACES</button>
+            <button id="placesToggleBtn" class="places-toggle-btn">SHOW PLACES</button>
 
             <!-- Places List -->
-            <div id="placesList"></div>
+            <div id="placesList" class="hidden"></div>
         </section>
 
         <!-- Section 4: Useful Phrases -->
         <section>
-            <h2 class="section-title">USEFUL PHRASES</h2>
+            <h2 class="section-title">100 PHRASES</h2>
 
             <!-- Search Box -->
             <div class="search-box">
@@ -571,11 +622,13 @@
 
             <!-- Filter Buttons -->
             <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">ALL</button>
+                <button class="filter-btn" data-filter="all">ALL</button>
                 <button class="filter-btn" data-filter="greeting">GREETING</button>
                 <button class="filter-btn" data-filter="order">ORDER</button>
                 <button class="filter-btn" data-filter="question">QUESTION</button>
                 <button class="filter-btn" data-filter="payment">PAYMENT</button>
+                <button class="filter-btn" data-filter="direction">DIRECTION</button>
+                <button class="filter-btn" data-filter="number">NUMBER</button>
             </div>
 
             <!-- Phrases List -->
@@ -620,17 +673,16 @@
 
                 const { hourly } = data;
 
-                // Labels: Time + Day
+                // Labels: Only show date at midnight
                 const labels = hourly.time.slice(0, 72).map((time, i) => {
                     const date = new Date(time);
                     const hour = date.getHours();
-                    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                    const dayName = dayNames[date.getDay()];
+                    const day = date.getDate();
 
                     if (hour === 0) {
-                        return `${dayName} ${hour}:00`;
+                        return day.toString();
                     }
-                    return `${hour}:00`;
+                    return '';
                 });
 
                 // Temperature data
@@ -685,6 +737,9 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        layout: {
+                            padding: 0
+                        },
                         plugins: {
                             legend: {
                                 display: true,
@@ -692,11 +747,13 @@
                                 labels: {
                                     color: '#000',
                                     font: {
-                                        size: 12,
+                                        size: 11,
                                         family: "'Courier New', monospace"
                                     },
                                     usePointStyle: true,
-                                    padding: 15
+                                    padding: 8,
+                                    boxWidth: 10,
+                                    boxHeight: 10
                                 }
                             },
                             tooltip: {
@@ -725,15 +782,17 @@
                             x: {
                                 grid: {
                                     color: 'rgba(0, 0, 0, 0.1)',
-                                    drawBorder: false
+                                    drawBorder: false,
+                                    offset: false
                                 },
                                 ticks: {
                                     color: '#000',
-                                    maxRotation: 45,
-                                    minRotation: 45,
-                                    autoSkip: true,
-                                    maxTicksLimit: 24,
+                                    maxRotation: 0,
+                                    minRotation: 0,
+                                    autoSkip: false,
+                                    padding: 5,
                                     font: {
+                                        size: 14,
                                         family: "'Courier New', monospace"
                                     }
                                 }
@@ -747,30 +806,24 @@
                                 },
                                 ticks: {
                                     color: '#000',
+                                    padding: 5,
                                     callback: function(value) {
                                         return value + '°C';
                                     },
                                     font: {
+                                        size: 11,
                                         family: "'Courier New', monospace"
                                     }
                                 }
                             },
                             'y-precip': {
                                 type: 'linear',
+                                display: false,
                                 position: 'right',
                                 min: 0,
                                 max: 100,
                                 grid: {
                                     display: false
-                                },
-                                ticks: {
-                                    color: '#C44536',
-                                    callback: function(value) {
-                                        return value + '%';
-                                    },
-                                    font: {
-                                        family: "'Courier New', monospace"
-                                    }
                                 }
                             }
                         },
@@ -792,21 +845,55 @@
         // PHRASES DATA
         // ============================================================
         const phrasesData = [
+            // Greeting
             { japanese: 'こんにちは', romaji: 'Konnichiwa', korean: '안녕하세요', category: 'greeting' },
             { japanese: 'ありがとうございます', romaji: 'Arigatou gozaimasu', korean: '감사합니다', category: 'greeting' },
             { japanese: 'すみません', romaji: 'Sumimasen', korean: '죄송합니다 / 저기요', category: 'greeting' },
+            { japanese: 'ごちそうさまでした', romaji: 'Gochisousama deshita', korean: '잘 먹었습니다', category: 'greeting' },
+
+            // Order
             { japanese: 'これをください', romaji: 'Kore wo kudasai', korean: '이것을 주세요', category: 'order' },
             { japanese: 'おすすめは何ですか', romaji: 'Osusume wa nan desu ka', korean: '추천 메뉴는 무엇인가요', category: 'order' },
+            { japanese: 'とりあえず、生で。', romaji: 'Toriaezu, nama de', korean: '일단 생맥주로 주세요', category: 'order' },
+
+            // Payment
             { japanese: 'いくらですか', romaji: 'Ikura desu ka', korean: '얼마입니까', category: 'payment' },
             { japanese: 'お会計お願いします', romaji: 'Okaikei onegai shimasu', korean: '계산 부탁합니다', category: 'payment' },
+
+            // Question
             { japanese: 'トイレはどこですか', romaji: 'Toire wa doko desu ka', korean: '화장실은 어디입니까', category: 'question' },
             { japanese: '英語できますか', romaji: 'Eigo dekimasu ka', korean: '영어 가능하신가요', category: 'question' },
-            { japanese: 'ごちそうさまでした', romaji: 'Gochisousama deshita', korean: '잘 먹었습니다', category: 'greeting' }
+
+            // Direction
+            { japanese: 'みぎです', romaji: 'Migi desu', korean: '오른쪽입니다', category: 'direction' },
+            { japanese: 'ひだりです', romaji: 'Hidari desu', korean: '왼쪽입니다', category: 'direction' },
+            { japanese: 'まっすぐです', romaji: 'Massugu desu', korean: '직진입니다', category: 'direction' },
+            { japanese: 'なんかいですか', romaji: 'Nankai desu ka', korean: '몇층입니까', category: 'direction' },
+            { japanese: 'いっかい', romaji: 'Ikkai', korean: '1층', category: 'direction' },
+            { japanese: 'にかい', romaji: 'Nikai', korean: '2층', category: 'direction' },
+            { japanese: 'さんかい', romaji: 'Sankai', korean: '3층', category: 'direction' },
+            { japanese: 'よんかい', romaji: 'Yonkai', korean: '4층', category: 'direction' },
+            { japanese: 'ごかい', romaji: 'Gokai', korean: '5층', category: 'direction' },
+            { japanese: 'ここですか', romaji: 'Koko desu ka', korean: '여기입니까', category: 'direction' },
+            { japanese: 'あそこですか', romaji: 'Asoko desu ka', korean: '저기입니까', category: 'direction' },
+            { japanese: 'どこですか', romaji: 'Doko desu ka', korean: '어디입니까', category: 'direction' },
+            { japanese: 'ちかいですか', romaji: 'Chikai desu ka', korean: '가깝습니까', category: 'direction' },
+            { japanese: 'とおいですか', romaji: 'Tooi desu ka', korean: '멉니까', category: 'direction' },
+            { japanese: 'ちかてつは どこですか', romaji: 'Chikatetsu wa doko desu ka', korean: '지하철은 어디입니까', category: 'direction' },
+
+            // Number (removed - now using tables only)
         ];
 
         // Load phrases with filter and search
-        function loadPhrases(filter = 'all', search = '') {
+        function loadPhrases(filter = 'none', search = '') {
             const container = document.getElementById('phrasesList');
+
+            // If no filter selected, show empty state
+            if (filter === 'none') {
+                container.innerHTML = '<div style="text-align:center; padding:40px; color:#000; opacity:0.7;">카테고리를 선택하세요</div>';
+                return;
+            }
+
             const filtered = phrasesData.filter(p => {
                 const matchesFilter = filter === 'all' || p.category === filter;
                 const matchesSearch = search === '' ||
@@ -816,13 +903,96 @@
                 return matchesFilter && matchesSearch;
             });
 
-            container.innerHTML = filtered.map(p => `
+            let html = '';
+
+            // Add number tables if showing number category or all
+            if (filter === 'number' || filter === 'all') {
+                html += `
+                    <div class="number-table-card">
+                        <div class="number-table-title">기본 숫자 (1-10)</div>
+                        <table class="number-table">
+                            <tr>
+                                <td>1</td><td>いち (Ichi)</td>
+                                <td>6</td><td>ろく (Roku)</td>
+                            </tr>
+                            <tr>
+                                <td>2</td><td>に (Ni)</td>
+                                <td>7</td><td>なな (Nana)</td>
+                            </tr>
+                            <tr>
+                                <td>3</td><td>さん (San)</td>
+                                <td>8</td><td>はち (Hachi)</td>
+                            </tr>
+                            <tr>
+                                <td>4</td><td>よん (Yon)</td>
+                                <td>9</td><td>きゅう (Kyuu)</td>
+                            </tr>
+                            <tr>
+                                <td>5</td><td>ご (Go)</td>
+                                <td>10</td><td>じゅう (Juu)</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="number-table-card">
+                        <div class="number-table-title">개수 세기 (1-8개)</div>
+                        <table class="number-table">
+                            <tr>
+                                <td>1개</td><td>ひとつ (Hitotsu)</td>
+                                <td>5개</td><td>いつつ (Itsutsu)</td>
+                            </tr>
+                            <tr>
+                                <td>2개</td><td>ふたつ (Futatsu)</td>
+                                <td>6개</td><td>むっつ (Muttsu)</td>
+                            </tr>
+                            <tr>
+                                <td>3개</td><td>みっつ (Mittsu)</td>
+                                <td>7개</td><td>ななつ (Nanatsu)</td>
+                            </tr>
+                            <tr>
+                                <td>4개</td><td>よっつ (Yottsu)</td>
+                                <td>8개</td><td>やっつ (Yattsu)</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="number-table-card">
+                        <div class="number-table-title">십/백/천 단위</div>
+                        <table class="number-table">
+                            <tr>
+                                <td>10</td><td>じゅう (Juu)</td>
+                                <td>600</td><td>ろっぴゃく (Roppyaku)</td>
+                            </tr>
+                            <tr>
+                                <td>20</td><td>にじゅう (Nijuu)</td>
+                                <td>700</td><td>ななひゃく (Nanahyaku)</td>
+                            </tr>
+                            <tr>
+                                <td>30</td><td>さんじゅう (Sanjuu)</td>
+                                <td>8000</td><td>はっせん (Hassen)</td>
+                            </tr>
+                            <tr>
+                                <td>400</td><td>よんひゃく (Yonhyaku)</td>
+                                <td>9000</td><td>きゅうせん (Kyuusen)</td>
+                            </tr>
+                            <tr>
+                                <td>500</td><td>ごひゃく (Gohyaku)</td>
+                                <td>10000</td><td>いちまん (Ichiman)</td>
+                            </tr>
+                        </table>
+                    </div>
+                `;
+            }
+
+            html += filtered.map(p => `
                 <div class="phrase-item">
                     <div class="phrase-japanese">${p.japanese}</div>
                     <div class="phrase-romaji">${p.romaji}</div>
                     <div class="phrase-korean">${p.korean}</div>
                 </div>
             `).join('');
+
+            container.innerHTML = html;
         }
 
         // Filter buttons for phrases
@@ -849,7 +1019,7 @@
             {"name": "스시사카바 사시스 하카타마잉구점", "lat": 33.5906798, "lng": 130.4206962, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%8B%9C%EC%82%AC%EC%B9%B4%EB%B0%94%20%EC%82%AC%EC%8B%9C%EC%8A%A4%20%ED%95%98%EC%B9%B4%ED%83%80%EB%A7%88%EC%9E%89%EA%B5%AC%EC%A0%90+fukuoka"},
             {"name": "旨鮨stand O", "lat": 33.5913748, "lng": 130.3928677, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%97%A8%E9%AE%A8stand%20O+fukuoka"},
             {"name": "우오츄", "lat": 33.5854051, "lng": 130.3977491, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EC%98%A4%EC%B8%84+fukuoka"},
-            {"name": "쇼쿠도 미츠", "lat": 33.5830234, "lng": 130.4083219, "category": "Sushi & Meal", "description": "굉장히 가고 싶음", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%87%BC%EC%BF%A0%EB%8F%84%20%EB%AF%B8%EC%B8%A0+fukuoka"},
+            {"name": "쇼쿠도 미츠", "lat": 33.5830234, "lng": 130.4083219, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%87%BC%EC%BF%A0%EB%8F%84%20%EB%AF%B8%EC%B8%A0+fukuoka"},
             {"name": "殊代 cotoshiro（ことしろ）", "lat": 33.5880955, "lng": 130.3923513, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%AE%8A%E4%BB%A3%20cotoshiro%EF%BC%88%E3%81%93%E3%81%A8%E3%81%97%E3%82%8D%EF%BC%89+fukuoka"},
             {"name": "텐텐테이", "lat": 33.594518, "lng": 130.400779, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4+fukuoka"},
             {"name": "부타 매니아동 이나다야 선", "lat": 33.5829599, "lng": 130.407105, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B6%80%ED%83%80%20%EB%A7%A4%EB%8B%88%EC%95%84%EB%8F%99%20%EC%9D%B4%EB%82%98%EB%8B%A4%EC%95%BC%20%EC%84%A0+fukuoka"},
@@ -971,7 +1141,7 @@
         // ============================================================
         document.addEventListener('DOMContentLoaded', () => {
             loadWeatherChart();
-            loadPhrases();
+            loadPhrases('none');
             loadPlaces();
 
             // Toggle button for places list

@@ -277,12 +277,40 @@
                 font-size: 11px;
             }
         }
+
+        /* Loading Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hashtag,
+        .central-graphic,
+        .nav-menu,
+        .names-vertical,
+        .dates,
+        .japanese-text,
+        .place-info {
+            animation: fadeIn 0.6s ease backwards;
+        }
+
+        .hashtag { animation-delay: 0.1s; }
+        .central-graphic { animation-delay: 0.2s; }
+        .nav-menu { animation-delay: 0.3s; }
+        .names-vertical { animation-delay: 0.4s; }
+        .dates { animation-delay: 0.5s; }
+        .japanese-text { animation-delay: 0.6s; }
+        .place-info { animation-delay: 0.7s; }
     </style>
 </head>
 <body>
 
     <!-- Central Graphic -->
-    <img src="images/fukuoka-skyline.png" class="central-graphic" alt="Fukuoka Skyline">
+    <img src="fukuoka-skyline.png" class="central-graphic" alt="Fukuoka Skyline">
 
     <!-- Navigation Menu - Top Left -->
     <nav class="nav-menu">
