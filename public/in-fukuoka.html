@@ -56,15 +56,65 @@
         /* Section Title */
         .section-title {
             font-family: 'Arial', 'Helvetica', sans-serif;
-            font-size: clamp(20px, 4vw, 32px);
+            font-size: clamp(26px, 5.5vw, 44px);
             font-weight: 700;
             text-transform: uppercase;
             color: #FFF;
             background: #000;
-            padding: 6px 16px;
+            padding: 8px 20px;
             margin-bottom: 30px;
             display: inline-block;
             letter-spacing: 0.08em;
+        }
+
+        /* Section Title Link Wrapper */
+        .section-title-link {
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            transition: all 0.3s ease;
+            width: fit-content;
+            max-width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .section-title-link .section-title {
+            margin-bottom: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover: Color inversion (Fukuoka Field Guide standard) */
+        .section-title-link:hover .section-title {
+            background: #FFF;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* Arrow indicator on hover */
+        .section-title-link:hover .section-title::after {
+            content: ' →';
+            display: inline;
+            margin-left: 8px;
+            font-size: 0.9em;
+        }
+
+        /* Focus state for keyboard navigation */
+        .section-title-link:focus {
+            outline: 3px solid #3533a3;
+            outline-offset: 2px;
+        }
+
+        .section-title-link:focus .section-title {
+            background: #FFF;
+            color: #000;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .section-title-link:hover .section-title {
+                transform: translateY(-1px);
+            }
         }
 
         /* Info Card (Flights) */
@@ -136,15 +186,29 @@
             box-shadow: 5px 5px 0 #000;
         }
 
+        /* Filter Section */
+        .filter-section {
+            margin-bottom: 25px;
+        }
+
+        .filter-label {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #000;
+            margin-bottom: 10px;
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+
         /* Filter Buttons */
         .filter-buttons {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
-            margin-bottom: 30px;
         }
 
-        .filter-btn, .category-btn {
+        .filter-btn, .category-btn, .region-btn {
             padding: 10px 20px;
             background: rgba(255, 255, 255, 0.7);
             border: 2px solid #000;
@@ -159,7 +223,9 @@
         .filter-btn.active,
         .filter-btn:hover,
         .category-btn.active,
-        .category-btn:hover {
+        .category-btn:hover,
+        .region-btn.active,
+        .region-btn:hover {
             background: #000;
             color: #FFF;
         }
@@ -281,6 +347,18 @@
             font-size: 10px;
             text-transform: uppercase;
             margin-bottom: 8px;
+        }
+
+        .place-region-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background: rgba(0, 0, 0, 0.1);
+            color: #000;
+            font-size: 9px;
+            text-transform: uppercase;
+            margin-left: 5px;
+            margin-bottom: 8px;
+            border: 1px solid #000;
         }
 
         .place-link {
@@ -535,6 +613,29 @@
                 width: 100px;
             }
         }
+
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header,
+        section {
+            animation: fadeInUp 0.6s ease backwards;
+        }
+
+        header { animation-delay: 0.1s; }
+        section:nth-of-type(1) { animation-delay: 0.2s; }
+        section:nth-of-type(2) { animation-delay: 0.3s; }
+        section:nth-of-type(3) { animation-delay: 0.4s; }
+        section:nth-of-type(4) { animation-delay: 0.5s; }
     </style>
 </head>
 <body>
@@ -573,7 +674,9 @@
 
         <!-- Section 2: Weather Chart -->
         <section>
-            <h2 class="section-title">WEATHER</h2>
+            <a href="https://weathernews.jp/onebox/33.59/130.40/temp=c" target="_blank" rel="noopener noreferrer" class="section-title-link" aria-label="Weather section - opens Fukuoka weather forecast in new tab">
+                <h2 class="section-title">WEATHER</h2>
+            </a>
             <div class="chart-wrapper">
                 <canvas id="weatherChart"></canvas>
             </div>
@@ -581,24 +684,42 @@
 
         <!-- Section 3: Must-Visit Places -->
         <section>
-            <h2 class="section-title">100 PLACES</h2>
+            <a href="https://www.google.com/maps/d/edit?mid=1__gjuclw82Uc7FgihmfOv1TC0XmgQjs&usp=sharing" target="_blank" rel="noopener noreferrer" class="section-title-link" aria-label="100 Places section - opens Google Maps collection in new tab">
+                <h2 class="section-title">100 PLACES</h2>
+            </a>
 
             <!-- Search Box -->
             <div class="search-box">
                 <input type="text" id="placesSearch" placeholder="SEARCH PLACES (NAME OR CATEGORY)...">
             </div>
 
-            <!-- Category Filter -->
-            <div class="filter-buttons">
-                <button class="category-btn active" data-category="all">ALL</button>
-                <button class="category-btn" data-category="Sushi & Meal">SUSHI</button>
-                <button class="category-btn" data-category="Cafe & Bakery">CAFE</button>
-                <button class="category-btn" data-category="Ramen">RAMEN</button>
-                <button class="category-btn" data-category="Yakiniku">YAKINIKU</button>
-                <button class="category-btn" data-category="Hamburg">HAMBURG</button>
-                <button class="category-btn" data-category="Izakaya">IZAKAYA</button>
-                <button class="category-btn" data-category="Store">STORE</button>
-                <button class="category-btn" data-category="Attraction">ATTRACTION</button>
+            <!-- Food Category Filter -->
+            <div class="filter-section">
+                <div class="filter-label">FOOD TYPE</div>
+                <div class="filter-buttons">
+                    <button class="category-btn active" data-category="all">ALL</button>
+                    <button class="category-btn" data-category="Sushi & Meal">SUSHI</button>
+                    <button class="category-btn" data-category="Cafe & Bakery">CAFE</button>
+                    <button class="category-btn" data-category="Ramen">RAMEN</button>
+                    <button class="category-btn" data-category="Yakiniku">YAKINIKU</button>
+                    <button class="category-btn" data-category="Hamburg">HAMBURG</button>
+                    <button class="category-btn" data-category="Izakaya">IZAKAYA</button>
+                    <button class="category-btn" data-category="Okonomiyaki">OKONOMIYAKI</button>
+                    <button class="category-btn" data-category="Store">STORE</button>
+                    <button class="category-btn" data-category="Attraction">ATTRACTION</button>
+                </div>
+            </div>
+
+            <!-- Regional Filter -->
+            <div class="filter-section">
+                <div class="filter-label">REGION</div>
+                <div class="filter-buttons">
+                    <button class="region-btn active" data-region="all">ALL</button>
+                    <button class="region-btn" data-region="Tenjin">TENJIN</button>
+                    <button class="region-btn" data-region="Nakasu">NAKASU</button>
+                    <button class="region-btn" data-region="Hakata">HAKATA</button>
+                    <button class="region-btn" data-region="Other">OTHER</button>
+                </div>
             </div>
 
             <!-- Places Count -->
@@ -613,7 +734,9 @@
 
         <!-- Section 4: Useful Phrases -->
         <section>
-            <h2 class="section-title">100 PHRASES</h2>
+            <a href="https://papago.naver.com/" target="_blank" rel="noopener noreferrer" class="section-title-link" aria-label="100 Phrases section - opens Papago translator in new tab">
+                <h2 class="section-title">100 PHRASES</h2>
+            </a>
 
             <!-- Search Box -->
             <div class="search-box">
@@ -640,7 +763,7 @@
     <!-- Footer -->
     <footer>
         <p>Fukuoka Field Guide — Spring 2026</p>
-        <p><a href="index.html">Main</a> | <a href="history.html">역사</a> | <a href="checklist.html">체크리스트</a> | <a href="emergency.html">긴급</a></p>
+        <p><a href="index.html">Main</a> | <a href="history.html">history</a> | <a href="checklist.html">checklist</a> | <a href="emergency.html">emergency</a></p>
     </footer>
 
     <!-- Chart.js -->
@@ -890,7 +1013,7 @@
 
             // If no filter selected, show empty state
             if (filter === 'none') {
-                container.innerHTML = '<div style="text-align:center; padding:40px; color:#000; opacity:0.7;">카테고리를 선택하세요</div>';
+                container.innerHTML = '<div style="text-align:center; padding:40px; color:#000; opacity:0.7;">Choose a category</div>';
                 return;
             }
 
@@ -1011,7 +1134,40 @@
         });
 
         // ============================================================
-        // FUKUOKA PLACES DATA (57 places)
+        // REGION DETERMINATION ALGORITHM
+        // ============================================================
+        function determineRegion(lat, lng) {
+            // Special case: Far west (Ohori Park area)
+            if (lng < 130.380) {
+                return 'Other';
+            }
+
+            // Special case: Far north (Uminonakamichi)
+            if (lat > 33.65) {
+                return 'Other';
+            }
+
+            // Tenjin: Central-west commercial area
+            if (lng >= 130.380 && lng < 130.402) {
+                return 'Tenjin';
+            }
+
+            // Nakasu: Bridge area between Tenjin and Hakata
+            if (lng >= 130.402 && lng < 130.414) {
+                return 'Nakasu';
+            }
+
+            // Hakata: Station area
+            if (lng >= 130.414 && lng < 130.430) {
+                return 'Hakata';
+            }
+
+            // Other: Everything else
+            return 'Other';
+        }
+
+        // ============================================================
+        // FUKUOKA PLACES DATA (71 places)
         // ============================================================
         const FUKUOKA_PLACES_DATA = {
           "places": [
@@ -1019,7 +1175,7 @@
             {"name": "스시사카바 사시스 하카타마잉구점", "lat": 33.5906798, "lng": 130.4206962, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%8B%9C%EC%82%AC%EC%B9%B4%EB%B0%94%20%EC%82%AC%EC%8B%9C%EC%8A%A4%20%ED%95%98%EC%B9%B4%ED%83%80%EB%A7%88%EC%9E%89%EA%B5%AC%EC%A0%90+fukuoka"},
             {"name": "旨鮨stand O", "lat": 33.5913748, "lng": 130.3928677, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%97%A8%E9%AE%A8stand%20O+fukuoka"},
             {"name": "우오츄", "lat": 33.5854051, "lng": 130.3977491, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EC%98%A4%EC%B8%84+fukuoka"},
-            {"name": "쇼쿠도 미츠", "lat": 33.5830234, "lng": 130.4083219, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%87%BC%EC%BF%A0%EB%8F%84%20%EB%AF%B8%EC%B8%A0+fukuoka"},
+            {"name": "쇼쿠도 미츠", "lat": 33.5830234, "lng": 130.4083219, "category": "Sushi & Meal", "description": "굉장히 가고 싶음", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%87%BC%EC%BF%A0%EB%8F%84%20%EB%AF%B8%EC%B8%A0+fukuoka"},
             {"name": "殊代 cotoshiro（ことしろ）", "lat": 33.5880955, "lng": 130.3923513, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E6%AE%8A%E4%BB%A3%20cotoshiro%EF%BC%88%E3%81%93%E3%81%A8%E3%81%97%E3%82%8D%EF%BC%89+fukuoka"},
             {"name": "텐텐테이", "lat": 33.594518, "lng": 130.400779, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4+fukuoka"},
             {"name": "부타 매니아동 이나다야 선", "lat": 33.5829599, "lng": 130.407105, "category": "Sushi & Meal", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B6%80%ED%83%80%20%EB%A7%A4%EB%8B%88%EC%95%84%EB%8F%99%20%EC%9D%B4%EB%82%98%EB%8B%A4%EC%95%BC%20%EC%84%A0+fukuoka"},
@@ -1037,6 +1193,11 @@
             {"name": "빵 스톡 텐진점", "lat": 33.5916517, "lng": 130.4040419, "category": "Cafe & Bakery", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B9%B5%20%EC%8A%A4%ED%86%A1%20%ED%85%90%EC%A7%84%EC%A0%90+fukuoka"},
             {"name": "The CRAFT Bar and Grill", "lat": 33.5894461, "lng": 130.3949854, "category": "Cafe & Bakery", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20CRAFT%20Bar%20and%20Grill+fukuoka"},
             {"name": "375 cafe & bar", "lat": 33.5766502, "lng": 130.4040751, "category": "Cafe & Bakery", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=375%20cafe%20%26%20bar+fukuoka"},
+            {"name": "dacō", "lat": 33.5859837, "lng": 130.3965253, "category": "Cafe & Bakery", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=dac%C5%8D+fukuoka"},
+            {"name": "일 포르노 델 미뇽", "lat": 33.5902265, "lng": 130.420495, "category": "Cafe & Bakery", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9D%BC%20%ED%8F%AC%EB%A5%B4%EB%85%B8%20%EB%8D%B8%20%EB%AF%B8%EB%87%BD+fukuoka"},
+            {"name": "무츠카도 야쿠인 본점", "lat": 33.5821833, "lng": 130.3962493, "category": "Cafe & Bakery", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%AC%B4%EC%B8%A0%EC%B9%B4%EB%8F%84%20%EC%95%BC%EC%BF%A0%EC%9D%B8%20%EB%B3%B8%EC%A0%90+fukuoka"},
+            {"name": "아맘 다코탄", "lat": 33.5780845, "lng": 130.3814381, "category": "Cafe & Bakery", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%95%84%EB%A7%98%20%EB%8B%A4%EC%BD%94%ED%83%84+fukuoka"},
+            {"name": "ぱん屋のぺったん", "lat": 33.5947794, "lng": 130.4127895, "category": "Cafe & Bakery", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E3%81%B1%E3%82%93%E5%B1%8B%E3%81%AE%E3%81%BA%E3%81%A3%E3%81%9F%E3%82%93+fukuoka"},
             {"name": "리치몬드 호텔 텐진 니시도리", "lat": 33.5893232, "lng": 130.3965747, "category": "Base", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A6%AC%EC%B9%98%EB%AA%AC%EB%93%9C%20%ED%98%B8%ED%85%94%20%ED%85%90%EC%A7%84%20%EB%8B%88%EC%8B%9C%EB%8F%84%EB%A6%AC+fukuoka"},
             {"name": "히키니쿠토코메 이마이즈미", "lat": 33.5836059, "lng": 130.3991432, "category": "Hamburg", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%9E%88%ED%82%A4%EB%8B%88%EC%BF%A0%ED%86%A0%EC%BD%94%EB%A9%94%20%EC%9D%B4%EB%A7%88%EC%9D%B4%EC%A6%88%EB%AF%B8+fukuoka"},
             {"name": "Messi", "lat": 33.654869, "lng": 130.4459639, "category": "Hamburg", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Messi+fukuoka"},
@@ -1052,6 +1213,8 @@
             {"name": "焼肉ホルモン人生 大ちゃん", "lat": 33.6107258, "lng": 130.4195169, "category": "Yakiniku", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E7%84%BC%E8%82%89%E3%83%9B%E3%83%AB%E3%83%A2%E3%83%B3%E4%BA%BA%E7%94%9F%20%E5%A4%A7%E3%81%A1%E3%82%83%E3%82%93+fukuoka"},
             {"name": "긴노이타", "lat": 33.5854046, "lng": 130.3957153, "category": "Okonomiyaki", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EA%B8%B4%EB%85%B8%EC%9D%B4%ED%83%80+fukuoka"},
             {"name": "Denkosekka", "lat": 33.5907775, "lng": 130.4106108, "category": "Okonomiyaki", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Denkosekka+fukuoka"},
+            {"name": "HAKATA Kintako", "lat": 33.5917223, "lng": 130.4083405, "category": "Okonomiyaki", "description": "타코야끼", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=HAKATA%20Kintako+fukuoka"},
+            {"name": "Tsukiji Gindako", "lat": 33.5904518, "lng": 130.4108444, "category": "Okonomiyaki", "description": "타코야끼", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Tsukiji%20Gindako+fukuoka"},
             {"name": "텐텐테이", "lat": 33.594518, "lng": 130.400779, "category": "Izakaya", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%ED%85%90%ED%85%90%ED%85%8C%EC%9D%B4+fukuoka"},
             {"name": "브라우니", "lat": 33.5929559, "lng": 130.3968802, "category": "Izakaya", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%B8%8C%EB%9D%BC%EC%9A%B0%EB%8B%88+fukuoka"},
             {"name": "돈토코이", "lat": 33.5759358, "lng": 130.3719374, "category": "Izakaya", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8F%88%ED%86%A0%EC%BD%94%EC%9D%B4+fukuoka"},
@@ -1065,55 +1228,69 @@
             {"name": "GU Mina Tenjin", "lat": 33.5929742, "lng": 130.3983736, "category": "Store", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=GU%20Mina%20Tenjin+fukuoka"},
             {"name": "몽벨", "lat": 33.5878551, "lng": 130.398327, "category": "Store", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%AA%BD%EB%B2%A8+fukuoka"},
             {"name": "Ishii Sports Yodobashi Hakata store", "lat": 33.5882884, "lng": 130.4215225, "category": "Store", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ishii%20Sports%20Yodobashi%20Hakata%20store+fukuoka"},
+            {"name": "KALDI COFFEE FARM Ming Hakata", "lat": 33.5912871, "lng": 130.4204772, "category": "Store", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=KALDI%20COFFEE%20FARM%20Ming%20Hakata+fukuoka"},
+            {"name": "칼디커피팜 하카타 마루이", "lat": 33.5887795, "lng": 130.4193862, "category": "Store", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%B9%BC%EB%94%94%EC%BB%A4%ED%94%BC%ED%8C%9C%20%ED%95%98%EC%B9%B4%ED%83%80%20%EB%A7%88%EB%A3%A8%EC%9D%B4+fukuoka"},
+            {"name": "KALDI COFFEE FARM Tenjin Chikagai", "lat": 33.5882253, "lng": 130.4011014, "category": "Store", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=KALDI%20COFFEE%20FARM%20Tenjin%20Chikagai+fukuoka"},
+            {"name": "로피아 나가하마점", "lat": 33.5926385, "lng": 130.3838095, "category": "Store", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A1%9C%ED%94%BC%EC%95%84%20%EB%82%98%EA%B0%80%ED%95%98%EB%A7%88%EC%A0%90+fukuoka"},
+            {"name": "돈키호테 후쿠오카 텐진 본점", "lat": 33.5863485, "lng": 130.3980199, "category": "Store", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8F%88%ED%82%A4%ED%98%B8%ED%85%8C%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%ED%85%90%EC%A7%84%20%EB%B3%B8%EC%A0%90+fukuoka"},
+            {"name": "돈키호테 나카스점", "lat": 33.5939851, "lng": 130.4058456, "category": "Store", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%8F%88%ED%82%A4%ED%98%B8%ED%85%8C%20%EB%82%98%EC%B9%B4%EC%8A%A4%EC%A0%90+fukuoka"},
             {"name": "오오시게 쇼쿠도 이마이즈미점", "lat": 33.5869882, "lng": 130.4007159, "category": "Ramen", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%98%A4%EC%98%A4%EC%8B%9C%EA%B2%8C%20%EC%87%BC%EC%BF%A0%EB%8F%84%20%EC%9D%B4%EB%A7%88%EC%9D%B4%EC%A6%88%EB%AF%B8%EC%A0%90+fukuoka"},
             {"name": "라멘 신타로", "lat": 33.5807612, "lng": 130.409304, "category": "Ramen", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%9D%BC%EB%A9%98%20%EC%8B%A0%ED%83%80%EB%A1%9C+fukuoka"},
             {"name": "멘도하나모코시", "lat": 33.5809807, "lng": 130.3953376, "category": "Ramen", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%98%EB%8F%84%ED%95%98%EB%82%98%EB%AA%A8%EC%BD%94%EC%8B%9C+fukuoka"},
             {"name": "멘야잇시 라멘", "lat": 33.5923001, "lng": 130.4079304, "category": "Ramen", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A9%98%EC%95%BC%EC%9E%87%EC%8B%9C%20%EB%9D%BC%EB%A9%98+fukuoka"},
             {"name": "오호리 공원", "lat": 33.5862065, "lng": 130.3764646, "category": "Attraction", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%98%A4%ED%98%B8%EB%A6%AC%20%EA%B3%B5%EC%9B%90+fukuoka"},
             {"name": "스이쿄텐만구", "lat": 33.5926509, "lng": 130.4018375, "category": "Attraction", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%8A%A4%EC%9D%B4%EC%BF%84%ED%85%90%EB%A7%8C%EA%B5%AC+fukuoka"},
-            {"name": "우미노나카미치 해변공원", "lat": 33.6642785, "lng": 130.3616, "category": "Attraction", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EB%AF%B8%EB%85%B8%EB%82%98%EC%B9%B4%EB%AF%B8%EC%B9%98%20%ED%95%B4%EB%B3%80%EA%B3%B5%EC%9B%90+fukuoka"}
+            {"name": "우미노나카미치 해변공원", "lat": 33.6642785, "lng": 130.3616, "category": "Attraction", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EC%9A%B0%EB%AF%B8%EB%85%B8%EB%82%98%EC%B9%B4%EB%AF%B8%EC%B9%98%20%ED%95%B4%EB%B3%80%EA%B3%B5%EC%9B%90+fukuoka"},
+            {"name": "마이즈루 공원", "lat": 33.5860599, "lng": 130.3831703, "category": "Attraction", "description": "", "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%EB%A7%88%EC%9D%B4%EC%A6%88%EB%A3%A8%20%EA%B3%B5%EC%9B%90+fukuoka"}
           ]
         };
 
-        // Load places with category filter AND search
-        function loadPlaces(category = 'all', searchTerm = '') {
+        // Track current filter state
+        let currentFoodCategory = 'all';
+        let currentRegion = 'all';
+
+        // Load places with BOTH food category AND region filter (AND logic)
+        function loadPlaces(foodCategory = 'all', region = 'all', searchTerm = '') {
             const container = document.getElementById('placesList');
             const countEl = document.getElementById('placesCount');
 
-            // 1. 카테고리 필터링
-            let filtered = category === 'all'
-                ? FUKUOKA_PLACES_DATA.places
-                : FUKUOKA_PLACES_DATA.places.filter(p => p.category === category);
+            // Add region to each place
+            let placesWithRegions = FUKUOKA_PLACES_DATA.places.map(p => ({
+                ...p,
+                region: determineRegion(p.lat, p.lng)
+            }));
 
-            // 2. 검색어 필터링 (이름 또는 카테고리에서 검색)
-            if (searchTerm) {
-                const term = searchTerm.toLowerCase();
-                filtered = filtered.filter(p =>
-                    p.name.toLowerCase().includes(term) ||
-                    p.category.toLowerCase().includes(term)
-                );
-            }
+            // AND filtering: Both food category AND region must match
+            let filtered = placesWithRegions.filter(p => {
+                const matchesFoodCategory = foodCategory === 'all' || p.category === foodCategory;
+                const matchesRegion = region === 'all' || p.region === region;
+                const matchesSearch = searchTerm === '' ||
+                    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    p.category.toLowerCase().includes(searchTerm.toLowerCase());
 
-            // 3. 결과 카운트 표시
-            if (searchTerm || category !== 'all') {
+                return matchesFoodCategory && matchesRegion && matchesSearch;
+            });
+
+            // Update count display
+            if (searchTerm || foodCategory !== 'all' || region !== 'all') {
                 countEl.textContent = `${filtered.length}개 장소 표시 (전체 ${FUKUOKA_PLACES_DATA.places.length}개)`;
             } else {
-                countEl.textContent = `전체 ${FUKUOKA_PLACES_DATA.places.length}개 장소`;
+                countEl.textContent = `Total ${FUKUOKA_PLACES_DATA.places.length} places`;
             }
 
-            // 4. 결과가 없으면 메시지 표시
+            // No results message
             if (filtered.length === 0) {
                 container.innerHTML = '<div style="text-align:center; padding:40px; color:#000;">검색 결과가 없습니다.</div>';
                 return;
             }
 
-            // 5. 장소 카드 렌더링
+            // Render with region tags
             container.innerHTML = filtered.map((place, i) => `
                 <div class="place-item">
                     <div class="place-number">${String(i + 1).padStart(2, '0')}</div>
                     <div class="place-content">
                         <div class="place-name">${place.name}</div>
-                        <div class="place-category">${place.category}</div>
+                        <div class="place-category">${place.category}<span class="place-region-tag">${place.region}</span></div>
                         <a href="${place.googleMapsUrl}" class="place-link" target="_blank">Google Maps →</a>
                     </div>
                 </div>
@@ -1122,17 +1299,28 @@
 
         // 검색창 input 이벤트
         document.getElementById('placesSearch').addEventListener('input', (e) => {
-            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
-            loadPlaces(activeCategory, e.target.value);
+            loadPlaces(currentFoodCategory, currentRegion, e.target.value);
         });
 
-        // 카테고리 버튼 클릭 (검색어 유지)
+        // Food category buttons
         document.querySelectorAll('.category-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+                currentFoodCategory = btn.dataset.category;
                 const searchTerm = document.getElementById('placesSearch').value;
-                loadPlaces(btn.dataset.category, searchTerm);
+                loadPlaces(currentFoodCategory, currentRegion, searchTerm);
+            });
+        });
+
+        // Region buttons
+        document.querySelectorAll('.region-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentRegion = btn.dataset.region;
+                const searchTerm = document.getElementById('placesSearch').value;
+                loadPlaces(currentFoodCategory, currentRegion, searchTerm);
             });
         });
 
