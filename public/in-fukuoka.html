@@ -1136,23 +1136,42 @@
         // ============================================================
         // REGION DETERMINATION ALGORITHM
         // ============================================================
+        // Uses longitude-based boundaries to classify places into regions.
+        // Boundaries calibrated to match Fukuoka's geographic districts:
+        //
+        // - Other (West):  lng < 130.385  (parks, residential, western areas)
+        // - Tenjin:        130.385-130.402 (central commercial district)
+        // - Nakasu:        130.402-130.414 (river/bridge entertainment district)
+        // - Hakata:        130.414-130.430 (station area)
+        // - Other (East):  lng >= 130.430  (eastern outliers)
+        // - Other (North): lat > 33.65     (far northern outliers)
+        // - Other (South): lat < 33.5795   (far southern outliers)
+        //
+        // Note: Boundaries set for walking distance (~20 min). Southern cafes
+        // (lat < 33.5795) are 2.4km+ from center (30+ min walk) = too far.
+        // ============================================================
         function determineRegion(lat, lng) {
-            // Special case: Far west (Ohori Park area)
-            if (lng < 130.380) {
-                return 'Other';
-            }
-
-            // Special case: Far north (Uminonakamichi)
+            // Far north outliers (Uminonakamichi, etc.)
             if (lat > 33.65) {
                 return 'Other';
             }
 
-            // Tenjin: Central-west commercial area
-            if (lng >= 130.380 && lng < 130.402) {
+            // Far south outliers (southern cafes, geographically isolated)
+            if (lat < 33.5795) {
+                return 'Other';
+            }
+
+            // Western area: Parks and residential (Ohori, Maizuru, Lopia Nagahama)
+            if (lng < 130.385) {
+                return 'Other';
+            }
+
+            // Tenjin: Central commercial district (Daimyo, Imaizumi)
+            if (lng >= 130.385 && lng < 130.402) {
                 return 'Tenjin';
             }
 
-            // Nakasu: Bridge area between Tenjin and Hakata
+            // Nakasu: River/bridge entertainment district
             if (lng >= 130.402 && lng < 130.414) {
                 return 'Nakasu';
             }
@@ -1162,7 +1181,7 @@
                 return 'Hakata';
             }
 
-            // Other: Everything else
+            // Other: Far east or any other outliers
             return 'Other';
         }
 
