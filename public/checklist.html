@@ -175,6 +175,26 @@
             font-size: 18px;
         }
 
+        /* Card Link */
+        .card-link-container {
+            margin-bottom: 15px;
+        }
+
+        .card-link {
+            display: inline-block;
+            color: #3533a3;
+            font-size: 13px;
+            text-decoration: none;
+            border-bottom: 2px solid #3533a3;
+            transition: all 0.2s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .card-link:hover {
+            color: #000;
+            border-bottom-color: #000;
+        }
+
         /* Checkbox */
         .card-checkbox-container {
             display: flex;
@@ -512,53 +532,59 @@
         <!-- Checklist Grid -->
         <div class="checklist-grid" id="checklistGrid">
 
-            <!-- Item 1: 항공권 -->
+            <!-- Item 1: 스마트패스 -->
             <div class="checklist-card" data-id="1">
                 <div class="card-number">01</div>
-                <div class="card-title">항공권 E-ticket</div>
+                <div class="card-title">스마트패스</div>
+                <div class="card-link-container">
+                    <a href="https://www.airport.kr/ap_ko/889/subview.do" class="card-link" target="_blank" rel="noopener">관련 링크 →</a>
+                </div>
                 <div class="card-essay">
-                    T'way Air 탑승권은 종이가 아닌 디지털로 존재합니다. 하지만 공항 체크인 카운터 앞에서 당황하지 않으려면, 사전 준비가 필수입니다.
-                    모바일 탑승권을 미리 다운로드하고, 배터리가 떨어질 경우를 대비해 스크린샷도 저장하세요.
-                    출발 2시간 전 공항 도착은 국제선의 철칙입니다.
+                    여권, 안면정보, 탑승권을 사전에 등록하면 출국장과 탑승게이트를 얼굴인증만으로 통과할 수 있는 서비스입니다.
+                    인천공항 스마트패스 앱, 셀프체크인 키오스크, 또는 은행 앱(KB스타뱅킹, 토스, 신한SOL뱅크, 우리WON뱅킹, 하나은행)에서 등록 가능합니다.
+                    안면정보는 한 번 등록하면 5년간 유효하며, 여권 재발급 시 재등록이 필요합니다.
                 </div>
                 <div class="card-tips">
                     <h4>실용 팁</h4>
                     <ul>
-                        <li>T'way Air 앱 또는 이메일에서 모바일 탑승권 저장</li>
-                        <li>QR 코드 스크린샷 백업 (사진 앱에 저장)</li>
-                        <li>출발 2시간 전 인천공항 제1터미널 도착</li>
+                        <li>인천공항 스마트패스 앱에서 여권 스캔 → 얼굴 등록 → 탑승권 등록</li>
+                        <li>안면정보(ID)는 5년간 유효, 여권 재발급 시 재등록 필요</li>
+                        <li>만 7세 이상 사용 가능 (14세 미만은 법정대리인 동의 필요)</li>
                     </ul>
                 </div>
                 <div class="card-checkbox-container">
                     <label class="checkbox-wrapper">
                         <input type="checkbox" data-item="1">
                     </label>
-                    <label class="checkbox-label">항공권 준비 완료</label>
+                    <label class="checkbox-label">스마트패스 등록 완료</label>
                 </div>
             </div>
 
-            <!-- Item 2: 여권 -->
+            <!-- Item 2: 비짓재팬웹 -->
             <div class="checklist-card" data-id="2">
                 <div class="card-number">02</div>
-                <div class="card-title">여권 & 사본</div>
+                <div class="card-title">비짓재팬웹</div>
+                <div class="card-link-container">
+                    <a href="https://services.digital.go.jp/ko/visit-japan-web/" class="card-link" target="_blank" rel="noopener">관련 링크 →</a>
+                </div>
                 <div class="card-essay">
-                    여권은 해외에서 당신의 정체성을 증명하는 유일한 문서입니다.
-                    유효기간이 6개월 이상 남아있는지 반드시 확인하세요. 만약 여권을 분실하면 여행이 중단될 수 있습니다.
-                    여권 정보면을 스캔하여 이메일로 자신에게 전송해두면, 분실 시 재발급 절차가 훨씬 빨라집니다.
+                    일본 입국 시 필요한 입국심사 및 세관신고를 사전에 등록하여 QR코드로 빠르게 통과할 수 있는 서비스입니다.
+                    여권 정보, 일본 내 연락처(호텔 주소 및 전화번호), 동반가족 정보를 미리 등록하면 공항에서 QR코드만 제시하면 됩니다.
+                    호텔 주소와 번호는 구글맵에서 확인 가능하며, 동반가족은 최대 10명까지 등록할 수 있습니다.
                 </div>
                 <div class="card-tips">
                     <h4>실용 팁</h4>
                     <ul>
-                        <li>여권 유효기간 6개월 이상 확인 (2026년 10월 이후)</li>
-                        <li>여권 정보면 사진 촬영 후 이메일/클라우드 저장</li>
-                        <li>주후쿠오카 대한민국 총영사관 연락처 저장 (+81-92-771-0461)</li>
+                        <li>비짓재팬웹에서 회원가입 후 여권 정보 등록</li>
+                        <li>동반가족 최대 10명 등록 가능</li>
+                        <li>입국심사 QR코드 발급 후 캡처하여 입국 시 사용</li>
                     </ul>
                 </div>
                 <div class="card-checkbox-container">
                     <label class="checkbox-wrapper">
                         <input type="checkbox" data-item="2">
                     </label>
-                    <label class="checkbox-label">여권 확인 완료</label>
+                    <label class="checkbox-label">비짓재팬웹 등록 완료</label>
                 </div>
             </div>
 
@@ -587,28 +613,27 @@
                 </div>
             </div>
 
-            <!-- Item 4: 해외사용 카드 -->
+            <!-- Item 4: 대중교통 카드 이용 -->
             <div class="checklist-card" data-id="4">
                 <div class="card-number">04</div>
-                <div class="card-title">해외사용 카드</div>
+                <div class="card-title">대중교통 카드 이용</div>
                 <div class="card-essay">
-                    VISA나 Mastercard는 전 세계 어디서나 통용되는 여행자의 여권입니다.
-                    출발 전 카드사에 연락해 해외결제 기능을 활성화하고, 무접촉 결제 한도를 확인하세요.
-                    일본은 터치 결제가 광범위하게 보급되어 있어, 편의점에서 지하철까지 카드 하나로 해결됩니다.
+                    후쿠오카 여행 시 트래블월렛(VISA) 카드는 텐진-하카타-후쿠오카 공항을 잇는 지하철 내 컨택리스(Touch) 결제에 매우 편리하며, 지하철 전 역에서 사용 가능합니다.
+                    다만, 트래블로그(Mastercard)는 지하철 이용이 제한될 수 있고, 버스는 컨택리스 카드 사용이 제한되는 경우가 많으므로 니모카(nimoca) 등 선불 교통카드를 함께 준비하는 것이 좋습니다.
                 </div>
                 <div class="card-tips">
                     <h4>실용 팁</h4>
                     <ul>
-                        <li>VISA/Mastercard 해외결제 활성화 확인 (카드사 앱 또는 전화)</li>
-                        <li>무접촉 결제(NFC) 한도 확인 (편의점, 지하철 등)</li>
-                        <li>카드 분실 시 긴급 연락처 저장 (24시간 고객센터)</li>
+                        <li>지하철: 트래블월렛(VISA) 컨택리스 단말기 탭하여 탑승</li>
+                        <li>버스: 니모카(nimoca), 하야카켄 등 선불 교통카드 추천</li>
+                        <li>트래블로그(Mastercard)는 지하철 사용 제한 가능</li>
                     </ul>
                 </div>
                 <div class="card-checkbox-container">
                     <label class="checkbox-wrapper">
                         <input type="checkbox" data-item="4">
                     </label>
-                    <label class="checkbox-label">카드 확인 완료</label>
+                    <label class="checkbox-label">대중교통 카드 준비 완료</label>
                 </div>
             </div>
 
@@ -637,28 +662,28 @@
                 </div>
             </div>
 
-            <!-- Item 6: 비상용 카드 -->
+            <!-- Item 6: 트래블월렛 현금인출 -->
             <div class="checklist-card" data-id="6">
                 <div class="card-number">06</div>
-                <div class="card-title">비상용 예비 카드</div>
+                <div class="card-title">트래블월렛 현금인출</div>
                 <div class="card-essay">
-                    주 카드가 분실되거나 도난당하면, 여행은 순식간에 악몽이 됩니다.
-                    예비 카드를 지갑이 아닌 다른 곳(여행 가방 안주머니, 호텔 금고)에 분리 보관하세요.
-                    두 개의 카드는 두 배의 안전입니다. 카드사 긴급 연락처를 휴대폰 연락처에 미리 저장해두면 위기 상황에서 빠르게 대응할 수 있습니다.
+                    트래블월렛 카드를 이용해 이온 ATM에서 수수료 없이 무료로 현금을 인출할 수 있습니다.
+                    이온 ATM은 구글맵 검색 또는 이온 마트, 이온 스타일, 미니스톱 편의점에서 찾을 수 있으며, 천엔 단위로 출금 가능합니다.
+                    출금 시 International Cards 버튼을 누르고, 한국어를 선택한 후 카드를 투입하면 됩니다.
                 </div>
                 <div class="card-tips">
                     <h4>실용 팁</h4>
                     <ul>
-                        <li>주 카드와 다른 브랜드 준비 (VISA + Mastercard)</li>
-                        <li>지갑과 분리 보관 (여행 가방 안주머니 또는 호텔 금고)</li>
-                        <li>카드사 긴급 연락처 저장 (분실/도난 신고용)</li>
+                        <li>이온 ATM 찾기: 구글맵 검색 또는 이온 계열사 매장</li>
+                        <li>International Cards → 한국어 → 카드 투입 → 비밀번호 입력</li>
+                        <li>당좌 예금 계좌 선택 (안되면 보통 예금 계좌)</li>
                     </ul>
                 </div>
                 <div class="card-checkbox-container">
                     <label class="checkbox-wrapper">
                         <input type="checkbox" data-item="6">
                     </label>
-                    <label class="checkbox-label">예비 카드 준비 완료</label>
+                    <label class="checkbox-label">트래블월렛 준비 완료</label>
                 </div>
             </div>
 

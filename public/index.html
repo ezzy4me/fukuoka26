@@ -25,7 +25,7 @@
         .central-graphic {
             position: absolute;
             left: 50%;
-            top: 50%;
+            top: 40%;
             transform: translate(-50%, -50%) rotate(90deg);
             height: 55vh;
             mix-blend-mode: multiply;
@@ -75,7 +75,7 @@
         .dates {
             position: fixed;
             left: 5%;
-            bottom: 16%;
+            bottom: 8%;
             z-index: 10;
             font-family: Impact, 'Arial Black', sans-serif;
             font-weight: 900;
@@ -123,7 +123,7 @@
         .place-info {
             position: fixed;
             right: 5%;
-            bottom: 20%;
+            bottom: 10%;
             z-index: 10;
             text-align: right;
         }
@@ -194,7 +194,7 @@
             .dates {
                 font-size: 50px;
                 left: 3%;
-                bottom: 14%;
+                bottom: 6%;
             }
 
             .japanese-text {
@@ -204,7 +204,7 @@
 
             .place-info {
                 right: 3%;
-                bottom: 18%;
+                bottom: 8%;
             }
 
             .place-label {
@@ -251,26 +251,26 @@
             .dates {
                 font-size: 44px;
                 left: 2%;
-                bottom: 13%;
+                bottom: 5%;
             }
 
             .japanese-text {
                 font-size: 14px;
-                bottom: 12%;
+                bottom: 14%;
             }
 
             .place-info {
                 right: 2%;
-                bottom: 17%;
+                bottom: 7%;
             }
         }
 
         /* Extra Small Screens (iPhone SE) */
         @media (max-width: 375px) {
             .japanese-text {
-                font-size: 13px;
+                font-size: 14px;
                 letter-spacing: -0.02em;
-                bottom: 12%;
+                bottom: 14%;
             }
 
             .names-vertical div {
@@ -282,7 +282,7 @@
 <body>
 
     <!-- Central Graphic -->
-    <img src="images/fukuoka-skyline.png" class="central-graphic" alt="Fukuoka Skyline">
+    <img src="fukuoka-skyline.png" class="central-graphic" alt="Fukuoka Skyline">
 
     <!-- Navigation Menu - Top Left -->
     <nav class="nav-menu">
@@ -297,8 +297,7 @@
 
     <!-- Names - Top Right (Vertical) -->
     <div class="names-vertical">
-        <div>sangmin</div>
-        <div>yunnyoung</div>
+        <div>sangmin·yunnyoung</div>
     </div>
 
     <!-- Dates - Bottom Left -->
